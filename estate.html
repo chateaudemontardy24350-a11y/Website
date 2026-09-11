@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Estate — Château de Montardy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  :root{--white:#fafaf8;--cream:#f5f3ef;--black:#1a1917;--mid:#5a5550;--light:#9a948e;--gold:#b89a6a;--serif:'Playfair Display',serif;--sans:'Inter',sans-serif;}
+  html{scroll-behavior:smooth;}body {background:var(--white);color:var(--black);font-family:var(--serif);overflow-x:hidden;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1px 56px;}
+  nav.dark .nav-left a,nav.dark .nav-right a{color:rgba(255,255,255,0.85);}
+  nav.scrolled{background:rgba(100,98,95,0.96);backdrop-filter:blur(12px);}
+  nav.scrolled .nav-left a,nav.scrolled .nav-right a{color:rgba(255,255,255,0.9);text-shadow:none;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  nav.scrolled .nav-logo-img img{filter:brightness(0) invert(1);opacity:0.9;}
+  nav.scrolled .nav-book{color:rgba(255,255,255,0.9)!important;border-bottom:none;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  .nav-left,.nav-right{display:flex;gap:88px;align-items:center;}
+  .nav-left a,.nav-right a{font-family:var(--sans);font-size:0.9rem;letter-spacing:0.3em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,1);font-weight:500;transition:color 0.3s;text-shadow:0 1px 16px rgba(0,0,0,0.8);}
+  .nav-left a:hover,.nav-right a:hover{color:var(--gold);}
+  .nav-logo-img img{height:116px;width:auto;filter:brightness(0) invert(1);opacity:0.95;}
+  .nav-book{font-family:var(--sans);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:400;color:rgba(255,255,255,0.85)!important;border-bottom:1px solid rgba(255,255,255,0.4);padding-bottom:2px;}
+  .lang-switch { display: flex; align-items: center; gap: 8px; margin-left: 24px; }
+  .lang-switch a { text-decoration: none !important; border: none !important; opacity: 0.45; transition: opacity 0.3s, transform 0.2s; display: inline-block; }
+  .lang-switch a:hover { opacity: 0.85; transform: scale(1.1); }
+  .lang-switch a.active { opacity: 1; transform: scale(1.15); }
+  .hero{position:relative;width:100%;height:100vh;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background:url('https://i.imgur.com/tBLqP0d.jpg') center/cover no-repeat;transform:scale(1.05);animation:heroScale 8s ease forwards;}
+  @keyframes heroScale{from{transform:scale(1.05);}to{transform:scale(1.0);}}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,14,12,0.65) 0%,rgba(15,14,12,0.2) 50%,transparent 100%);}
+  .hero-content{position:absolute;bottom:10%;left:7%;max-width:700px;}
+  .hero-kicker{font-family:var(--sans);font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp 1s 0.2s forwards;}
+  .hero-headline{font-family:var(--serif);font-size:clamp(2rem,3.8vw,4.2rem);font-weight:400;color:#fff;line-height:1.05;opacity:0;animation:fadeUp 1.2s 0.4s forwards;}
+  .hero-headline em{font-style:italic;}
+  .hero-sub{font-family:var(--sans);font-size:0.9rem;color:rgba(255,255,255,0.65);margin-top:20px;opacity:0;animation:fadeUp 1s 0.7s forwards;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .intro{padding:100px 7%;}
+  .intro-text{font-family:var(--serif);font-size:clamp(1.4rem,2.4vw,2.6rem);font-weight:400;line-height:1.5;opacity:0;transform:translateY(40px);transition:opacity 1.1s cubic-bezier(0.22,1,0.36,1),transform 1.1s cubic-bezier(0.22,1,0.36,1);}
+  .intro-text.visible{opacity:1;transform:translateY(0);}
+  .split{display:grid;grid-template-columns:1fr 1fr;margin:0 0 0 7%;}
+  .split.reverse{margin:0 7% 0 0;direction:rtl;}
+  .split.reverse>*{direction:ltr;}
+  .split-img{aspect-ratio:4/3;overflow:hidden;}
+  .split-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.8s cubic-bezier(0.22,1,0.36,1);display:block;}
+  .split-img:hover img{transform:scale(1.04);}
+  .split-text{padding:80px 7% 80px 8%;display:flex;flex-direction:column;justify-content:center;}
+  .split-kicker{font-family:var(--sans);font-size:0.95rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--light);margin-bottom:24px;opacity:0;transform:translateY(20px);transition:opacity 0.9s 0.1s cubic-bezier(0.22,1,0.36,1),transform 0.9s 0.1s cubic-bezier(0.22,1,0.36,1);}
+  .split-kicker.visible{opacity:1;transform:translateY(0);}
+  .split-headline{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);font-weight:400;line-height:1.2;margin-bottom:32px;opacity:0;transform:translateY(25px);transition:opacity 1s 0.2s cubic-bezier(0.22,1,0.36,1),transform 1s 0.2s cubic-bezier(0.22,1,0.36,1);}
+  .split-headline.visible{opacity:1;transform:translateY(0);}
+  .split-headline em{font-style:italic;}
+  .split-body{font-family:var(--sans);font-size:0.95rem;line-height:1.8;color:var(--mid);margin-bottom:20px;opacity:0;transform:translateY(20px);transition:opacity 1s 0.3s cubic-bezier(0.22,1,0.36,1),transform 1s 0.3s cubic-bezier(0.22,1,0.36,1);}
+  .split-body.visible{opacity:1;transform:translateY(0);}
+  .split-link{font-family:var(--sans);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);border:1.5px solid var(--black);background:transparent;text-decoration:none;padding:14px 28px;display:inline-block;margin-top:28px;transition:background 0.3s,color 0.3s,border-color 0.3s;opacity:0;transform:translateY(15px);}
+  .split-link.visible{opacity:1;transform:translateY(0);}
+  .split-link:hover{background:var(--gold);border-color:var(--gold);color:var(--white);}
+  .day-section{padding:100px 7%;background:var(--black);}
+  .day-title{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);font-weight:400;color:var(--white);line-height:1.2;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .day-title.visible{opacity:1;transform:translateY(0);}
+  .day-timeline{display:grid;grid-template-columns:repeat(6,1fr);position:relative;margin-top:80px;}
+  .day-timeline::before{content:'';position:absolute;top:10px;left:0;right:0;height:1px;background:rgba(250,250,248,0.15);}
+  .day-step{padding:0 20px 0 0;opacity:0;transform:translateY(20px);transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1);}
+  .day-step.visible{opacity:1;transform:translateY(0);}
+  .day-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);margin-bottom:24px;}
+  .day-time{font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+  .day-title-step{font-family:var(--serif);font-size:1.1rem;color:var(--white);margin-bottom:10px;font-weight:400;}
+  .day-body{font-family:var(--sans);font-size:0.78rem;line-height:1.75;color:rgba(250,250,248,0.5);}
+  .getting-here{padding:100px 7%;background:var(--cream);}
+  .getting-here-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px;}
+  .getting-here-title{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);font-weight:400;line-height:1.2;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .getting-here-title.visible{opacity:1;transform:translateY(0);}
+  .transport-item{border-top:1px solid rgba(26,25,23,0.12);padding:24px 0;opacity:0;transform:translateY(15px);transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1);}
+  .transport-item.visible{opacity:1;transform:translateY(0);}
+  .transport-name{font-family:var(--serif);font-size:1.2rem;font-weight:400;margin-bottom:8px;}
+  .transport-detail{font-family:var(--sans);font-size:0.88rem;color:var(--mid);line-height:1.7;}
+  .transport-time{font-family:var(--sans);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-top:8px;}
+  .cta-band{display:grid;grid-template-columns:1fr 1fr;background:var(--black);padding:80px 7%;gap:80px;align-items:center;}
+  .cta-left{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3.8rem);font-weight:400;color:var(--white);line-height:1.1;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .cta-left.visible{opacity:1;transform:translateY(0);}
+  .cta-left em{font-style:italic;color:var(--gold);}
+  .cta-right{opacity:0;transform:translateY(25px);transition:opacity 1s 0.2s cubic-bezier(0.22,1,0.36,1),transform 1s 0.2s cubic-bezier(0.22,1,0.36,1);}
+  .cta-right.visible{opacity:1;transform:translateY(0);}
+  .cta-body{font-family:var(--sans);font-size:0.95rem;color:rgba(250,250,248,0.65);line-height:1.8;margin-bottom:32px;}
+  .cta-btn{display:inline-block;font-family:var(--sans);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--white);padding:16px 36px;text-decoration:none;font-weight:500;transition:background 0.3s,color 0.3s;}
+  .cta-btn:hover{background:var(--gold);color:var(--white);}
+  footer{background:var(--black);padding:60px 7%;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;}
+  .footer-brand{font-family:var(--serif);font-size:1.1rem;color:var(--white);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;}
+  .footer-tag{font-family:var(--sans);font-size:0.75rem;color:rgba(255,255,255,0.35);font-style:italic;margin-bottom:24px;}
+  .footer-copy{font-family:var(--sans);font-size:0.72rem;color:rgba(255,255,255,0.25);}
+  .footer-col h4{font-family:var(--sans);font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;}
+  .footer-col a{display:block;font-family:var(--sans);font-size:0.78rem;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:10px;transition:color 0.25s;}
+  .footer-col a:hover{color:rgba(255,255,255,0.9);}
+  .page-transition{position:fixed;inset:0;background:var(--black);z-index:9000;transform:translateY(100%);pointer-events:none;}
+  .page-transition.entering{animation:slideUp 0.5s cubic-bezier(0.76,0,0.24,1) forwards;}
+  .page-transition.leaving{transform:translateY(0);animation:slideDown 0.5s cubic-bezier(0.76,0,0.24,1) 0.1s forwards;}
+  @keyframes slideUp{from{transform:translateY(0);}to{transform:translateY(-100%);}}
+  @keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="page-transition" id="page-transition"></div>
+<nav id="nav" class="dark">
+  <div class="nav-left">
+    <a href="shooting-school.html">The Shooting School</a>
+    <a href="estate.html">The Estate</a>
+    <a href="gallery.html">Gallery</a>
+  </div>
+  <a class="nav-logo-img" href="index.html"><img src="https://i.imgur.com/s2o9C6r.png" alt="Château de Montardy"></a>
+  <div class="nav-right">
+
+    <a href="region.html">The Region</a>
+    <a href="booking.html" class="nav-book">Book a Discovery Call</a>
+    <div class="lang-switch"><a href="estate.html" class="active"><img src="https://flagcdn.com/w40/gb.png" width="28" height="20" alt="English" style="border-radius:2px;display:block;"></a><a href="estate-fr.html"><img src="https://flagcdn.com/w40/fr.png" width="28" height="20" alt="Français" style="border-radius:2px;display:block;"></a></div>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-kicker">The Estate · Château de Montardy</p>
+    <h1 class="hero-headline">Never sold. In the family since 1427.<br><em>Never opened to the public.</em></h1>
+    <p class="hero-sub">500 hectares · Dordogne, France · Rebuilt in the 16th Century</p>
+  </div>
+</section>
+<div class="intro"><p class="intro-text reveal">Château de Montardy has been in the du Lau d'Allemans family since 1427. It overlooks the Dronne valley and spans 500 hectares.</p></div>
+<div class="split" id="chateau">
+  <div class="split-img"><img src="https://i.imgur.com/ACLvgNn.jpg" alt="Château de Montardy"></div>
+  <div class="split-text">
+    <p class="split-kicker reveal">The Château</p>
+    <h2 class="split-headline reveal">Six Centuries.<br><em>One Family.</em></h2>
+    <p class="split-body reveal">The château dates to the 12th century. It has passed from generation to generation of the du Lau d'Allemans family without interruption. The architecture reflects six centuries of quiet evolution: medieval foundations, Renaissance additions, and the warmth of a home that has always belonged to the same family.</p>
+    <p class="split-body reveal">What you feel when you arrive is not the polish of a luxury hotel. It is the particular atmosphere of a place that has been genuinely inhabited and loved for 600 years.</p>
+  </div>
+</div>
+<div class="split reverse" id="grounds">
+  <div class="split-img"><img src="https://i.imgur.com/gVXDHVT.jpg" alt="The Shooting Grounds"></div>
+  <div class="split-text">
+    <p class="split-kicker reveal">The Shooting Grounds</p>
+    <h2 class="split-headline reveal">500 Private Hectares.<br><em>Built for the Serious Shot.</em></h2>
+    <p class="split-body reveal">Every stand was designed by Jean himself. High birds, crossing birds, driven partridge, walked-up woodcock — each position built to isolate and challenge a specific skill.</p>
+    <p class="split-body reveal">During the first discovery session, Jean identifies exactly what you are struggling with and adjusts each drive to correct it. The entire estate is yours alone — no shared stands, no one else on the ground.</p>
+  </div>
+</div>
+<div class="split" id="interiors">
+  <div class="split-img"><img src="https://i.imgur.com/6zWHGON.jpg" alt="The Interiors"></div>
+  <div class="split-text">
+    <p class="split-kicker reveal">The Interiors</p>
+    <h2 class="split-headline reveal">Your Evenings<br><em>at the Château.</em></h2>
+    <p class="split-body reveal">The salon has books that have been there for generations. The dining room table seats twelve. The cellar holds wines from Bergerac, Bordeaux, and beyond. After a day on the grounds, the château offers the kind of evening that makes guests extend their stay.</p>
+    <p class="split-body reveal">This is not hotel dining. It is dinner in a private home — with food from the Périgord, wine from the estate's cellar, and conversation that tends to run late.</p>
+  </div>
+</div>
+<div class="split reverse" id="gardens">
+  <div class="split-img"><img src="https://i.imgur.com/12aXpZY.jpg" alt="The Grounds"></div>
+  <div class="split-text">
+    <p class="split-kicker reveal">The Grounds</p>
+    <h2 class="split-headline reveal">Beyond the Shooting.<br><em>The Estate Itself.</em></h2>
+    <p class="split-body reveal">Beyond the shooting grounds, the estate offers vast and varied terrain to explore on foot. The paths wind through oak woodland, offering valley views that stretch as far as the eye can see.</p>
+    <p class="split-body reveal">For the hours between sessions, or for guests who are not shooting, the land alone is worth the trip. The Dordogne is rich with châteaux to visit, historic monuments, prehistoric caves, and some of the finest restaurants and wines in France.</p>
+  </div>
+</div>
+<section class="day-section" id="day">
+  <p class="split-kicker" style="color:var(--gold);font-family:var(--sans);font-size:0.95rem;letter-spacing:0.28em;text-transform:uppercase;margin-bottom:24px;display:block;">A Day at Montardy</p>
+  <h2 class="day-title reveal">From Breakfast<br><em>to Dinner.</em></h2>
+  <div class="day-timeline">
+    <div class="day-step reveal"><div class="day-dot"></div><div class="day-time">08:00</div><div class="day-title-step">Breakfast</div><p class="day-body">On the terrace overlooking the valley. Village bread, local honey, café au lait.</p></div>
+    <div class="day-step reveal"><div class="day-dot"></div><div class="day-time">09:30</div><div class="day-title-step">Morning Session</div><p class="day-body">Out on the grounds with Jean. The first drives of the day.</p></div>
+    <div class="day-step reveal"><div class="day-dot"></div><div class="day-time">13:00</div><div class="day-title-step">Lunch</div><p class="day-body">Back at the château. A proper Périgord lunch — duck, walnut salad, local cheese. A glass of Bergerac.</p></div>
+    <div class="day-step reveal"><div class="day-dot"></div><div class="day-time">15:00</div><div class="day-title-step">Afternoon Drive</div><p class="day-body">The afternoon session. Different stands, different birds, different light. Jean adjusts the programme based on what he observed in the morning.</p></div>
+    <div class="day-step reveal"><div class="day-dot"></div><div class="day-time">18:30</div><div class="day-title-step">Aperitif</div><p class="day-body">On the terrace as the sun drops. A Périgord aperitif, guns cleaned, the day reviewed.</p></div>
+    <div class="day-step reveal"><div class="day-dot"></div><div class="day-time">20:00</div><div class="day-title-step">Dinner</div><p class="day-body">In the dining room. Périgord cuisine, château wine, candlelight. The kind of dinner guests remember for years.</p></div>
+  </div>
+</section>
+<section class="getting-here" id="getting-here">
+  <p class="split-kicker reveal" style="display:block;margin-bottom:16px;">Getting Here</p>
+  <h2 class="getting-here-title reveal">Château de Montardy<br><em>Dordogne, France</em></h2>
+  <div class="getting-here-grid">
+    <div>
+      <div class="transport-item reveal"><div class="transport-name">Bordeaux Airport</div><p class="transport-detail">The closest major international airport. Direct flights from London, Paris, Amsterdam and other European cities.</p><div class="transport-time">1h30 by car</div></div>
+      <div class="transport-item reveal"><div class="transport-name">Bergerac Airport</div><p class="transport-detail">The closest airport to the château. Seasonal routes from the UK and Northern Europe.</p><div class="transport-time">45 min by car</div></div>
+      <div class="transport-item reveal"><div class="transport-name">Toulouse Airport</div><p class="transport-detail">Second major international option. Good connections from the US and Middle East via Paris CDG.</p><div class="transport-time">2h by car</div></div>
+      <div class="transport-item reveal"><div class="transport-name">Train — Angoulême</div><p class="transport-detail">TGV from Paris Montparnasse to Angoulême. Transfers from the station available on request.</p><div class="transport-time">3h30 from Paris</div></div>
+    </div>
+    <div style="background:var(--white);padding:40px;display:flex;flex-direction:column;justify-content:center;">
+      <p class="split-kicker reveal" style="display:block;margin-bottom:16px;">Address</p>
+      <p style="font-family:var(--serif);font-size:1.2rem;line-height:1.9;">Château de Montardy<br>Dordogne, France<br><br><span style="font-family:var(--sans);font-size:0.88rem;color:var(--mid);">Exact address and arrival instructions provided upon booking confirmation.</span></p>
+      <a href="booking-fr.html" class="split-link reveal" style="margin-top:32px;">Book a Discovery Call</a>
+    </div>
+  </div>
+</section>
+<div class="cta-band" id="cta">
+  <div class="cta-left reveal">Experience<br><em>Château de Montardy</em></div>
+  <div class="cta-right reveal">
+    <p class="cta-body">A 20-minute call to understand what you are looking for and build the ideal visit around your stay at Château de Montardy.</p>
+    <a href="booking-fr.html" class="cta-btn">Book a Discovery Call</a>
+  </div>
+</div>
+<footer>
+  <div><div class="footer-brand">Château de Montardy</div><div class="footer-tag">Private Estate · Dordogne, France</div><div class="footer-copy">© 2025 Château de Montardy. All rights reserved.</div></div>
+  <div class="footer-col"><h4>Navigate</h4><a href="index.html">Home</a><a href="shooting-school.html">The Shooting School</a><a href="estate.html">The Estate</a><a href="region.html">The Region</a><a href="gallery.html">Gallery</a></div>
+  <div class="footer-col"><h4>Contact</h4><a href="mailto:contact@chateaudemontardy.com">contact@chateaudemontardy.com</a><a href="tel:+33500000000">+33 (0)5 00 00 00 00</a><a href="booking.html">Book a Discovery Call →</a></div>
+</footer>
+<script>
+  
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));});
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{if(window.scrollY>80){nav.classList.add('scrolled');nav.classList.remove('dark');}else{nav.classList.remove('scrolled');nav.classList.add('dark');}});
+  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('.split-kicker,.split-headline,.split-body,.split-link').forEach((el,i)=>{setTimeout(()=>el.classList.add('visible'),i*100);});entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.15,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal,.intro-text,.cta-left,.cta-right,.day-title,.day-step,.getting-here-title,.transport-item').forEach(el=>observer.observe(el));
+  const transition=document.getElementById('page-transition');
+  document.querySelectorAll('a[href$=".html"]').forEach(link=>{link.addEventListener('click',e=>{const href=link.getAttribute('href');e.preventDefault();transition.classList.add('leaving');setTimeout(()=>{window.location.href=href;},600);});});
+  window.addEventListener('pageshow',()=>{transition.classList.add('entering');setTimeout(()=>transition.classList.remove('entering'),800);});
+</script>
+
+
+</body></html>

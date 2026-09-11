@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery — Château de Montardy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  :root{--white:#fafaf8;--cream:#f5f3ef;--black:#1a1917;--mid:#5a5550;--light:#9a948e;--gold:#b89a6a;--serif:'Playfair Display',serif;--sans:'Inter',sans-serif;}
+  html{scroll-behavior:smooth;}body{background:var(--white);color:var(--black);font-family:var(--serif);overflow-x:hidden;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1px 56px;background:rgba(100,98,95,0.96);backdrop-filter:blur(12px);}
+  .nav-left a,.nav-right a{font-family:var(--sans);font-size:0.9rem;letter-spacing:0.3em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,0.9);font-weight:500;transition:color 0.3s;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  .nav-left a:hover,.nav-right a:hover{color:var(--gold);}
+  .nav-left,.nav-right{display:flex;gap:88px;align-items:center;}
+  .nav-logo-img img{height:116px;width:auto;filter:brightness(0) invert(1);opacity:0.9;}
+  .nav-book{font-size:0.9rem!important;letter-spacing:0.3em!important;border-bottom:none!important;}
+  .lang-switch { display: flex; align-items: center; gap: 8px; margin-left: 24px; }
+  .lang-switch a { text-decoration: none !important; border: none !important; opacity: 0.45; transition: opacity 0.3s, transform 0.2s; display: inline-block; }
+  .lang-switch a:hover { opacity: 0.85; transform: scale(1.1); }
+  .lang-switch a.active { opacity: 1; transform: scale(1.15); }
+  .gallery-header{padding:160px 7% 60px;}
+  .gallery-kicker{font-family:var(--sans);font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp 1s 0.2s forwards;}
+  .gallery-title{font-family:var(--serif);font-size:clamp(3rem,5vw,6rem);font-weight:400;line-height:1.05;opacity:0;animation:fadeUp 1.2s 0.4s forwards;}
+  .gallery-title em{font-style:italic;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  
+  
+  
+  
+  .gallery-grid{padding:0 7% 100px;columns:3;column-gap:12px;}
+  .gallery-item{break-inside:avoid;margin-bottom:12px;overflow:hidden;position:relative;opacity:1;}
+  .gallery-item.visible{opacity:1;transform:translateY(0);}
+  .gallery-item img{width:100%;height:auto;display:block;transition:transform 0.8s cubic-bezier(0.22,1,0.36,1);}
+  .gallery-item:hover img{transform:scale(1.04);}
+  
+  
+  .lightbox{position:fixed;inset:0;background:rgba(15,14,12,0.95);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+  .lightbox.open{opacity:1;pointer-events:all;}
+  .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;}
+  .lightbox-close{position:absolute;top:32px;right:40px;font-family:var(--sans);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.6);cursor:pointer;transition:color 0.3s;}
+  .lightbox-close:hover{color:var(--white);}
+  .lightbox-prev,.lightbox-next{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer;transition:color 0.3s;background:none;border:none;}
+  .lightbox-prev{left:40px;}.lightbox-next{right:40px;}
+  .lightbox-prev:hover,.lightbox-next:hover{color:var(--white);}
+  .cta-band{display:grid;grid-template-columns:1fr 1fr;background:var(--black);padding:80px 7%;gap:80px;align-items:center;}
+  .cta-left{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3.8rem);font-weight:400;color:var(--white);line-height:1.1;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .cta-left.visible{opacity:1;transform:translateY(0);}
+  .cta-left em{font-style:italic;color:var(--gold);}
+  .cta-right{opacity:0;transform:translateY(25px);transition:opacity 1s 0.2s cubic-bezier(0.22,1,0.36,1),transform 1s 0.2s cubic-bezier(0.22,1,0.36,1);}
+  .cta-right.visible{opacity:1;transform:translateY(0);}
+  .cta-body{font-family:var(--sans);font-size:0.95rem;color:rgba(250,250,248,0.65);line-height:1.8;margin-bottom:32px;}
+  .cta-btn{display:inline-block;font-family:var(--sans);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--white);padding:16px 36px;text-decoration:none;font-weight:500;transition:background 0.3s,color 0.3s;}
+  .cta-btn:hover{background:var(--gold);color:var(--white);}
+  footer{background:var(--black);padding:60px 7%;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;}
+  .footer-brand{font-family:var(--serif);font-size:1.1rem;color:var(--white);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;}
+  .footer-tag{font-family:var(--sans);font-size:0.75rem;color:rgba(255,255,255,0.35);font-style:italic;margin-bottom:24px;}
+  .footer-copy{font-family:var(--sans);font-size:0.72rem;color:rgba(255,255,255,0.25);}
+  .footer-col h4{font-family:var(--sans);font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;}
+  .footer-col a{display:block;font-family:var(--sans);font-size:0.78rem;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:10px;transition:color 0.25s;}
+  .footer-col a:hover{color:rgba(255,255,255,0.9);}
+  .page-transition{position:fixed;inset:0;background:var(--black);z-index:9000;transform:translateY(100%);pointer-events:none;}
+  .page-transition.entering{animation:slideUp 0.5s cubic-bezier(0.76,0,0.24,1) forwards;}
+  .page-transition.leaving{transform:translateY(0);animation:slideDown 0.5s cubic-bezier(0.76,0,0.24,1) 0.1s forwards;}
+  @keyframes slideUp{from{transform:translateY(0);}to{transform:translateY(-100%);}}
+  @keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="page-transition" id="page-transition"></div>
+<nav id="nav" class="dark">
+  <div class="nav-left">
+    <a href="shooting-school.html">The Shooting School</a>
+    <a href="estate.html">The Estate</a>
+    <a href="gallery.html">Gallery</a>
+  </div>
+  <a href="index.html" class="nav-logo-img"><img src="https://i.imgur.com/s2o9C6r.png" alt="Château de Montardy"></a>
+  <div class="nav-right">
+
+    <a href="region.html">The Region</a>
+    <a href="booking.html" class="nav-book">Book a Discovery Call</a>
+    <div class="lang-switch"><a href="gallery.html" class="active"><img src="https://flagcdn.com/w40/gb.png" width="28" height="20" alt="English" style="border-radius:2px;display:block;"></a><a href="gallery-fr.html"><img src="https://flagcdn.com/w40/fr.png" width="28" height="20" alt="Français" style="border-radius:2px;display:block;"></a></div>
+  </div>
+</nav>
+<div class="gallery-header">
+  <p class="gallery-kicker">Château de Montardy</p>
+  <h1 class="gallery-title">Gallery</h1>
+</div>
+<div class="gallery-grid" id="gallery-grid">
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/ZXOI05u.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/SuMCUTd.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/DWt9ArU.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/gVXDHVT.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/U42zFPR.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/ACLvgNn.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/PG61eRQ.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/CSD5RhP.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/g9mh1Qz.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/p3kYuTW.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/UPfJMFj.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/LwTHiu4.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/ugtD2wn.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/wTu55i9.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/F6SQXPr.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/cvq4vvi.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/tBLqP0d.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/6zWHGON.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/lF9E2YQ.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/xbqRlRB.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/12aXpZY.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/XWMyEi7.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/ZZ2alDq.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/gEPLHj7.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/jPRuc4N.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/cLjKREJ.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/OhWuqj5.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/80FFviR.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/ZfEVP8e.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/tdXPhwN.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/J7D2GTf.jpg" alt="Château de Montardy">
+  </div>
+  <div class="gallery-item">
+    <img src="https://i.imgur.com/QWgXk0o.jpg" alt="Château de Montardy">
+  </div>
+</div>
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" id="lightbox-close">Close</div>
+  <button class="lightbox-prev" id="lightbox-prev">← Prev</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-next" id="lightbox-next">Next →</button>
+</div>
+<div class="cta-band" id="cta">
+  <div class="cta-left reveal">Experience<br><em>Château de Montardy</em></div>
+  <div class="cta-right reveal">
+    <p class="cta-body">A 20-minute call to understand what you are looking for and build the ideal visit around your stay.</p>
+    <a href="booking.html" class="cta-btn">Book a Discovery Call</a>
+  </div>
+</div>
+<footer>
+  <div><div class="footer-brand">Château de Montardy</div><div class="footer-tag">Private Estate · Dordogne, France</div><div class="footer-copy">© 2025 Château de Montardy. All rights reserved.</div></div>
+  <div class="footer-col"><h4>Navigate</h4><a href="index.html">Home</a><a href="shooting-school.html">The Shooting School</a><a href="estate.html">The Estate</a><a href="region.html">The Region</a><a href="gallery.html">Gallery</a></div>
+  <div class="footer-col"><h4>Contact</h4><a href="mailto:contact@chateaudemontardy.com">contact@chateaudemontardy.com</a><a href="tel:+33500000000">+33 (0)5 00 00 00 00</a><a href="booking.html">Book a Discovery Call →</a></div>
+</footer>
+<script>
+  
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));});
+  const filterBtns=document.querySelectorAll('else{item.style.display='none';}});});});
+  const lightbox=document.getElementById('lightbox');const lightboxImg=document.getElementById('lightbox-img');let currentIndex=0;let visibleItems=[];
+  function openLightbox(index){visibleItems=[...document.querySelectorAll('.gallery-item:not([style*="none"])')];currentIndex=index;lightboxImg.src=visibleItems[currentIndex].querySelector('img').src;lightbox.classList.add('open');}
+  items.forEach((item,i)=>{item.addEventListener('click',()=>openLightbox([...items].indexOf(item)));});
+  document.getElementById('lightbox-close').addEventListener('click',()=>lightbox.classList.remove('open'));
+  document.getElementById('lightbox-prev').addEventListener('click',()=>{currentIndex=(currentIndex-1+visibleItems.length)%visibleItems.length;lightboxImg.src=visibleItems[currentIndex].querySelector('img').src;});
+  document.getElementById('lightbox-next').addEventListener('click',()=>{currentIndex=(currentIndex+1)%visibleItems.length;lightboxImg.src=visibleItems[currentIndex].querySelector('img').src;});
+  lightbox.addEventListener('click',e=>{if(e.target===lightbox)lightbox.classList.remove('open');});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')lightbox.classList.remove('open');if(e.key==='ArrowLeft')document.getElementById('lightbox-prev').click();if(e.key==='ArrowRight')document.getElementById('lightbox-next').click();});
+  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.1});
+  document.querySelectorAll('.gallery-item,.cta-left,.cta-right').forEach(el=>observer.observe(el));
+  const transition=document.getElementById('page-transition');
+  document.querySelectorAll('a[href$=".html"]').forEach(link=>{link.addEventListener('click',e=>{const href=link.getAttribute('href');e.preventDefault();transition.classList.add('leaving');setTimeout(()=>{window.location.href=href;},600);});});
+  window.addEventListener('pageshow',()=>{transition.classList.add('entering');setTimeout(()=>transition.classList.remove('entering'),800);});
+</script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Montardy — Editor</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --black: #1a1917; --white: #fafaf8; --cream: #f5f3ef;
+    --gold: #b89a6a; --mid: #5a5550; --light: #9a948e;
+    --border: rgba(26,25,23,0.12); --panel: 340px;
+  }
+  html, body { height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  /* LOGIN */
+  #login { position: fixed; inset: 0; background: var(--black); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+  .login-box { background: var(--white); padding: 48px; width: 380px; text-align: center; }
+  .login-logo { font-family: Georgia,serif; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 6px; }
+  .login-sub { font-size: 0.75rem; color: var(--light); margin-bottom: 36px; }
+  .login-box label { display: block; text-align: left; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--light); margin-bottom: 8px; }
+  .login-box input { width: 100%; padding: 10px 0; font-size: 0.95rem; border: none; border-bottom: 1px solid var(--border); background: transparent; outline: none; margin-bottom: 28px; }
+  .login-btn { width: 100%; padding: 13px; background: var(--black); color: var(--white); border: none; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: background 0.3s; }
+  .login-btn:hover { background: var(--gold); }
+  .login-err { font-size: 0.78rem; color: #c0392b; margin-top: 12px; display: none; }
+
+  /* SHELL */
+  #shell { display: none; height: 100vh; flex-direction: column; }
+
+  /* TOPBAR */
+  .topbar { height: 52px; background: var(--black); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+  .topbar-left { display: flex; align-items: center; gap: 20px; }
+  .topbar-brand { font-family: Georgia,serif; font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+  .page-tabs { display: flex; gap: 4px; }
+  .page-tab { padding: 5px 14px; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.2s; border-radius: 2px; }
+  .page-tab:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.3); }
+  .page-tab.active { background: var(--gold); border-color: var(--gold); color: var(--white); }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .lang-toggle { display: flex; gap: 4px; }
+  .lang-btn { padding: 4px 10px; font-size: 0.7rem; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.45); cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+  .lang-btn.active { background: rgba(255,255,255,0.12); color: var(--white); border-color: rgba(255,255,255,0.35); }
+  .save-btn { padding: 6px 18px; background: var(--gold); color: var(--white); border: none; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: background 0.2s; }
+  .save-btn:hover { background: #9a7e52; }
+  .logout-btn { font-size: 0.68rem; color: rgba(255,255,255,0.3); background: none; border: none; cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase; }
+  .logout-btn:hover { color: rgba(255,255,255,0.65); }
+
+  /* BODY */
+  .body { display: flex; flex: 1; overflow: hidden; }
+
+  /* EDITOR PANEL */
+  .editor-panel { width: var(--panel); flex-shrink: 0; background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .editor-header { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--cream); flex-shrink: 0; }
+  .editor-header-label { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--light); margin-bottom: 4px; }
+  .editor-field-name { font-size: 0.92rem; color: var(--black); font-weight: 600; }
+  .editor-hint-text { font-size: 0.7rem; color: var(--light); margin-top: 3px; }
+
+  .editor-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; }
+  .editor-empty-icon { font-size: 2.5rem; margin-bottom: 16px; opacity: 0.25; }
+  .editor-empty-title { font-size: 0.88rem; color: var(--mid); margin-bottom: 8px; font-weight: 500; }
+  .editor-empty-sub { font-size: 0.73rem; color: var(--light); line-height: 1.7; }
+
+  .editor-active { flex: 1; padding: 20px; display: none; flex-direction: column; gap: 10px; overflow-y: auto; }
+  .editor-textarea { width: 100%; padding: 12px; font-size: 0.88rem; line-height: 1.7; border: 1.5px solid var(--border); border-radius: 3px; resize: vertical; min-height: 110px; font-family: Georgia,serif; color: var(--black); outline: none; transition: border-color 0.2s; }
+  .editor-textarea:focus { border-color: var(--gold); }
+  .editor-tip { font-size: 0.68rem; color: var(--light); line-height: 1.6; }
+  .apply-btn { padding: 10px 20px; background: var(--black); color: var(--white); border: none; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: background 0.2s; align-self: flex-start; }
+  .apply-btn:hover { background: var(--gold); }
+
+  .changes-panel { padding: 16px 20px; border-top: 1px solid var(--border); flex-shrink: 0; max-height: 200px; overflow-y: auto; display: none; }
+  .changes-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--light); margin-bottom: 10px; }
+  .change-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .change-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  .change-label { font-size: 0.73rem; color: var(--mid); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .no-changes-msg { font-size: 0.73rem; color: var(--light); font-style: italic; }
+
+  /* PREVIEW */
+  .preview-wrap { flex: 1; position: relative; overflow: hidden; background: #ddd; }
+  .preview-chrome { position: absolute; top: 0; left: 0; right: 0; height: 36px; background: #e2e0de; border-bottom: 1px solid #bbb; display: flex; align-items: center; padding: 0 12px; gap: 6px; z-index: 10; }
+  .chrome-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .chrome-url { flex: 1; background: var(--white); border-radius: 4px; padding: 3px 10px; font-size: 0.7rem; color: var(--mid); margin: 0 8px; }
+  .chrome-tip { font-size: 0.65rem; color: var(--light); }
+  iframe#frame { position: absolute; top: 36px; left: 0; right: 0; bottom: 0; width: 100%; height: calc(100% - 36px); border: none; }
+
+  /* STATUS */
+  .statusbar { height: 26px; background: #111; display: flex; align-items: center; padding: 0 20px; gap: 12px; flex-shrink: 0; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #27ae60; }
+  .status-txt { font-size: 0.63rem; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; }
+  .status-right { margin-left: auto; font-size: 0.63rem; color: var(--gold); letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-box">
+    <div class="login-logo">Château de Montardy</div>
+    <div class="login-sub">Website Editor</div>
+    <label>Password</label>
+    <input type="password" id="pw" placeholder="Enter password">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-err" id="login-err">Incorrect password.</div>
+  </div>
+</div>
+
+<div id="shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-brand">Montardy Editor</div>
+      <div class="page-tabs">
+        <button class="page-tab active" onclick="loadPage('index')" id="tab-index">Home</button>
+        <button class="page-tab" onclick="loadPage('shooting-school')" id="tab-shooting-school">Shooting School</button>
+        <button class="page-tab" onclick="loadPage('estate')" id="tab-estate">Estate</button>
+        <button class="page-tab" onclick="loadPage('region')" id="tab-region">Region</button>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="switchLang('en')" id="btn-en">🇬🇧 EN</button>
+        <button class="lang-btn" onclick="switchLang('fr')" id="btn-fr">🇫🇷 FR</button>
+      </div>
+      <button class="save-btn" onclick="saveFile()">⬇ Download Updated File</button>
+      <button class="logout-btn" onclick="location.reload()">Sign out</button>
+    </div>
+  </div>
+
+  <div style="background:#7c6030;padding:8px 20px;font-size:0.72rem;color:rgba(255,255,255,0.9);letter-spacing:0.05em;flex-shrink:0;display:flex;align-items:center;gap:16px;">
+  <span>📝 <strong>How to publish:</strong> 1. Make your changes &nbsp;→&nbsp; 2. Click <strong>Download Updated File</strong> &nbsp;→&nbsp; 3. Go to <strong>Netlify</strong> and drag the downloaded file onto your site &nbsp;→&nbsp; Done.</span>
+</div>
+<div class="body">
+    <div class="editor-panel">
+      <div class="editor-header">
+        <div class="editor-header-label">Currently editing</div>
+        <div class="editor-field-name" id="field-name">Nothing selected</div>
+        <div class="editor-hint-text" id="field-hint">Click any text on the page →</div>
+      </div>
+      <div class="editor-empty" id="editor-empty">
+        <div class="editor-empty-icon">👆</div>
+        <div class="editor-empty-title">Click any text on the page</div>
+        <div class="editor-empty-sub">Hover over any text in the preview. It will highlight in gold. Click it to open here and edit.</div>
+      </div>
+      <div class="editor-active" id="editor-active">
+        <textarea class="editor-textarea" id="editor-ta" oninput="liveUpdate()"></textarea>
+        <div class="editor-tip">Tip: For headlines with two lines, press Enter between the two lines. The second line will appear in italic.</div>
+        <button class="apply-btn" onclick="applyChange()">✓ Apply (or press Ctrl+Enter)</button>
+      </div>
+      <div class="changes-panel" id="changes-panel">
+        <div class="changes-label">Changes on this page</div>
+        <div id="changes-list"><div class="no-changes-msg">No changes yet</div></div>
+      </div>
+    </div>
+
+    <div class="preview-wrap">
+      <div class="preview-chrome">
+        <div class="chrome-dot" style="background:#ff5f56"></div>
+        <div class="chrome-dot" style="background:#ffbd2e"></div>
+        <div class="chrome-dot" style="background:#27c93f"></div>
+        <div class="chrome-url" id="chrome-url">index.html</div>
+        <div class="chrome-tip">👆 Click any text to edit it</div>
+      </div>
+      <iframe id="frame" src="index.html"></iframe>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <div class="status-dot"></div>
+    <div class="status-txt" id="status-txt">Ready — click any text in the preview to start editing</div>
+    <div class="status-right" id="status-right"></div>
+  </div>
+</div>
+
+<script>
+const PW = 'montardy2025';
+let curPage = 'index', curLang = 'en';
+let selEl = null, selXPath = null;
+let changes = {}; // xpath -> {label, text}
+let iDoc = null;
+
+// ── AUTH
+function doLogin() {
+  if (document.getElementById('pw').value === PW) {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('shell').style.display = 'flex';
+    document.getElementById('frame').addEventListener('load', onLoad);
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ── FRAME LOAD
+function onLoad() {
+  try {
+    iDoc = document.getElementById('frame').contentDocument;
+    injectEditorStyles();
+    makeEditable();
+    reapply();
+    setStatus('Ready — click any text to edit');
+  } catch(e) {
+    setStatus('Note: Open this file from Netlify (not locally) for editing to work.');
+  }
+}
+
+const EDITABLE = [
+  'h1','h2','h3',
+  '.hero-headline','.hero-kicker','.hero-sub','.hero-attribution',
+  '.split-headline','.split-kicker','.split-body',
+  '.intro-text','.intro-puncher','.intro-sub',
+  '.step-title','.step-body',
+  '.for-name','.for-body',
+  '.testimonial-text',
+  '.cta-left','.cta-body',
+  '.quote-text',
+  '.highlight-name','.highlight-body',
+  '.day-title-step','.day-body',
+  '.region-title','.region-body',
+  '.booking-headline','.booking-kicker','.booking-desc',
+  '.reassurance-title','.reassurance-body',
+  '.transport-name','.transport-detail',
+  '.gallery-title','.gallery-kicker',
+  '.getting-here-title','.session-title',
+  '.jean-left .split-headline','.jean-left .split-body',
+];
+
+function injectEditorStyles() {
+  if (iDoc.getElementById('_editorcss')) return;
+  const s = iDoc.createElement('style');
+  s.id = '_editorcss';
+  s.textContent = `
+    ._eh { outline: 2px dashed rgba(184,154,106,0.55) !important; outline-offset: 3px; cursor: pointer !important; }
+    ._es { outline: 2px solid #b89a6a !important; outline-offset: 3px; background: rgba(184,154,106,0.07) !important; }
+    a, button { pointer-events: none !important; }
+    /* Force all reveal animations to show immediately in editor */
+    .reveal, .stat, .exp-card, .intro-text, .intro-puncher, .intro-sub,
+    .quote-text, .exp-title, .cta-left, .cta-right, .session-title,
+    .session-step, .for-title, .for-card, .testimonials-title, .testimonial-card,
+    .split-kicker, .split-headline, .split-body, .split-link,
+    .jean-section .reveal, .day-step, .day-title, .transport-item,
+    .getting-here-title, .highlights-title, .highlight-item,
+    .photo-grid-img, .map-title, .map-sub, .map-container,
+    .reassurance-item, .expect-item, .gallery-item, .region-title, .region-body, .region-img,
+    .for-title, .for-card, .booking-kicker, .booking-headline, .booking-desc {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  `;
+  iDoc.head.appendChild(s);
+}
+
+function makeEditable() {
+  const seen = new Set();
+  EDITABLE.forEach(sel => {
+    iDoc.querySelectorAll(sel).forEach(el => {
+      if (seen.has(el)) return;
+      seen.add(el);
+      el.addEventListener('mouseenter', () => { if (el !== selEl) el.classList.add('_eh'); });
+      el.addEventListener('mouseleave', () => el.classList.remove('_eh'));
+      el.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); selectEl(el); });
+    });
+  });
+  iDoc.querySelectorAll('a').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+}
+
+function selectEl(el) {
+  if (selEl) { selEl.classList.remove('_es','_eh'); }
+  selEl = el;
+  selXPath = xpath(el);
+  el.classList.add('_es');
+  el.classList.remove('_eh');
+
+  const raw = el.innerHTML
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<em>([\s\S]*?)<\/em>/gi, '$1')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\n\s*\n/g, '\n')
+    .trim();
+
+  const label = fieldLabel(el);
+  document.getElementById('field-name').textContent = label;
+  document.getElementById('field-hint').textContent = el.tagName.toLowerCase() + (el.className ? ' · .' + el.className.split(' ').find(c => c && !['_es','_eh','visible','reveal'].includes(c)) : '');
+  document.getElementById('editor-empty').style.display = 'none';
+  document.getElementById('editor-active').style.display = 'flex';
+  document.getElementById('changes-panel').style.display = 'block';
+  document.getElementById('editor-ta').value = raw;
+  document.getElementById('editor-ta').focus();
+  setStatus('Editing: ' + label);
+}
+
+function fieldLabel(el) {
+  const c = el.className || '';
+  const t = el.tagName;
+  if (c.includes('hero-headline') || t==='H1') return 'Hero Headline';
+  if (c.includes('hero-kicker')) return 'Hero Kicker';
+  if (c.includes('hero-sub') || c.includes('hero-attribution')) return 'Hero Subline';
+  if (c.includes('booking-headline')) return 'Booking Headline';
+  if (c.includes('booking-kicker')) return 'Booking Kicker';
+  if (c.includes('booking-desc')) return 'Booking Description';
+  if (c.includes('split-headline') || t==='H2') return 'Section Headline';
+  if (c.includes('split-kicker')) return 'Section Kicker';
+  if (c.includes('split-body')) return 'Body Text';
+  if (c.includes('intro-puncher')) return 'Opening Statement';
+  if (c.includes('intro-sub')) return 'Supporting Text';
+  if (c.includes('intro-text')) return 'Intro Text';
+  if (c.includes('step-title') || t==='H3') return 'Step Title';
+  if (c.includes('step-body')) return 'Step Body';
+  if (c.includes('for-name')) return 'Guest Type Title';
+  if (c.includes('for-body')) return 'Guest Type Body';
+  if (c.includes('testimonial-text')) return 'Testimonial';
+  if (c.includes('cta-left')) return 'CTA Headline';
+  if (c.includes('cta-body')) return 'CTA Body';
+  if (c.includes('quote-text')) return 'Quote';
+  if (c.includes('highlight-name')) return 'Activity Title';
+  if (c.includes('highlight-body')) return 'Activity Body';
+  if (c.includes('day-title-step')) return 'Day Step Title';
+  if (c.includes('day-body')) return 'Day Step Body';
+  if (c.includes('session-title')) return 'Section Title';
+  if (c.includes('region-title')) return 'Section Title';
+  if (c.includes('region-body')) return 'Section Body';
+  if (c.includes('reassurance-title')) return 'Reassurance Title';
+  if (c.includes('reassurance-body')) return 'Reassurance Body';
+  if (c.includes('transport-name')) return 'Transport Name';
+  if (c.includes('transport-detail')) return 'Transport Detail';
+  if (c.includes('gallery-title')) return 'Gallery Title';
+  if (c.includes('getting-here-title')) return 'Getting Here Title';
+  return t.toLowerCase();
+}
+
+function liveUpdate() {
+  if (!selEl) return;
+  setElText(selEl, document.getElementById('editor-ta').value);
+}
+
+function applyChange() {
+  if (!selEl || !selXPath) return;
+  const val = document.getElementById('editor-ta').value;
+  setElText(selEl, val);
+  changes[selXPath] = { label: fieldLabel(selEl), text: val };
+  renderChangesList();
+  const n = Object.keys(changes).length;
+  setStatus('✓ Change applied');
+  document.getElementById('status-right').textContent = n + ' unsaved change' + (n!==1?'s':'');
+}
+
+function setElText(el, val) {
+  const c = el.className || '';
+  const isHeadline = ['H1','H2'].includes(el.tagName) ||
+    c.includes('split-headline') || c.includes('hero-headline') ||
+    c.includes('booking-headline') || c.includes('cta-left') ||
+    c.includes('intro-puncher') || c.includes('region-title') ||
+    c.includes('session-title') || c.includes('getting-here-title') ||
+    c.includes('day-title') || c.includes('gallery-title') ||
+    c.includes('highlights-title') || c.includes('for-title') ||
+    c.includes('testimonials-title');
+
+  if (isHeadline && val.includes('\n')) {
+    const parts = val.split('\n');
+    el.innerHTML = parts[0] + '<br><em>' + parts.slice(1).join(' ') + '</em>';
+  } else {
+    el.textContent = val;
+  }
+}
+
+function reapply() {
+  Object.entries(changes).forEach(([xp, ch]) => {
+    const el = byXPath(xp);
+    if (el) setElText(el, ch.text);
+  });
+}
+
+function renderChangesList() {
+  const list = document.getElementById('changes-list');
+  const keys = Object.keys(changes);
+  if (!keys.length) { list.innerHTML = '<div class="no-changes-msg">No changes yet</div>'; return; }
+  list.innerHTML = keys.map(k => `
+    <div class="change-row">
+      <div class="change-dot"></div>
+      <div class="change-label">${changes[k].label}</div>
+    </div>`).join('');
+}
+
+// ── PAGE / LANG
+function getFile(page, lang) {
+  if (page === 'index') return lang === 'en' ? 'index.html' : 'index-fr.html';
+  return lang === 'en' ? `${page}.html` : `${page}-fr.html`;
+}
+
+function loadPage(page) {
+  curPage = page;
+  selEl = null; selXPath = null; changes = {};
+  document.getElementById('editor-empty').style.display = 'flex';
+  document.getElementById('editor-active').style.display = 'none';
+  document.getElementById('changes-panel').style.display = 'none';
+  document.getElementById('field-name').textContent = 'Nothing selected';
+  document.getElementById('field-hint').textContent = 'Click any text on the page →';
+  document.getElementById('status-right').textContent = '';
+  renderChangesList();
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + page).classList.add('active');
+  const f = getFile(page, curLang);
+  document.getElementById('chrome-url').textContent = f;
+  document.getElementById('frame').src = f;
+  setStatus('Loading ' + f + '...');
+}
+
+function switchLang(lang) {
+  curLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-fr').classList.toggle('active', lang==='fr');
+  loadPage(curPage);
+}
+
+// ── SAVE
+function saveFile() {
+  if (!iDoc) { alert('Preview must be loaded first.'); return; }
+  try {
+    let html = '<!DOCTYPE html>\n' + iDoc.documentElement.outerHTML;
+    html = html.replace(/<style id="_editorcss">[\s\S]*?<\/style>/g, '');
+    html = html.replace(/ class="([^"]*?)(?:\s*_eh|\s*_es)([^"]*?)"/g, ' class="$1$2"');
+    const blob = new Blob([html], {type:'text/html'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = getFile(curPage, curLang);
+    a.click();
+    setStatus('✓ File downloaded to your computer. Now go to Netlify → drag this file onto your site → done.');
+  } catch(e) {
+    alert('Save failed. Make sure this editor is hosted on the same Netlify site as your pages.');
+  }
+}
+
+// ── XPATH
+function xpath(el) {
+  if (el.id) return `//*[@id="${el.id}"]`;
+  const parts = [];
+  let n = el;
+  while (n && n !== iDoc.body) {
+    const p = n.parentNode; if (!p) break;
+    const sibs = Array.from(p.children).filter(c => c.tagName === n.tagName);
+    parts.unshift(n.tagName.toLowerCase() + '[' + (sibs.indexOf(n)+1) + ']');
+    n = p;
+  }
+  return '//' + parts.join('/');
+}
+
+function byXPath(xp) {
+  try { return iDoc.evaluate(xp, iDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; }
+  catch(e) { return null; }
+}
+
+function setStatus(msg) { document.getElementById('status-txt').textContent = msg; }
+
+// ── KEYBOARD
+document.addEventListener('keydown', e => {
+  if ((e.metaKey||e.ctrlKey) && e.key==='Enter') { e.preventDefault(); applyChange(); }
+  if (e.key==='Escape' && selEl) {
+    selEl.classList.remove('_es');
+    selEl = null;
+    document.getElementById('editor-empty').style.display = 'flex';
+    document.getElementById('editor-active').style.display = 'none';
+    document.getElementById('field-name').textContent = 'Nothing selected';
+  }
+});
+</script>
+</body>
+</html>

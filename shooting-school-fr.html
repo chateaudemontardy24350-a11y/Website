@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'École de Tir — Château de Montardy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  :root{--white:#fafaf8;--cream:#f5f3ef;--black:#1a1917;--mid:#5a5550;--light:#9a948e;--gold:#b89a6a;--serif:'Playfair Display',serif;--sans:'Inter',sans-serif;}
+  html{scroll-behavior:smooth;}
+  body {background:var(--white);color:var(--black);font-family:var(--serif);overflow-x:hidden;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1px 56px;}
+  nav.dark .nav-left a,nav.dark .nav-right a{color:rgba(255,255,255,0.85);}
+  nav.scrolled{background:rgba(100,98,95,0.96);backdrop-filter:blur(12px);}
+  nav.scrolled .nav-left a,nav.scrolled .nav-right a{color:rgba(255,255,255,0.9);text-shadow:none;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  nav.scrolled .nav-logo-img img{filter:brightness(0) invert(1);opacity:0.9;}
+  nav.scrolled .nav-book{color:rgba(255,255,255,0.9)!important;border-bottom:none;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  .nav-left,.nav-right{display:flex;gap:88px;align-items:center;}
+  .nav-left a,.nav-right a{font-family:var(--sans);font-size:0.9rem;letter-spacing:0.3em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,1);font-weight:500;transition:color 0.3s;text-shadow:0 1px 16px rgba(0,0,0,0.8);}
+  .nav-left a:hover,.nav-right a:hover{color:var(--gold);}
+  .nav-logo-img img{height:116px;width:auto;filter:brightness(0) invert(1);opacity:0.95;}
+  .nav-book{font-family:var(--sans);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:400;color:rgba(255,255,255,0.85)!important;border-bottom:1px solid rgba(255,255,255,0.4);padding-bottom:2px;}
+  .lang-switch { display: flex; align-items: center; gap: 8px; margin-left: 24px; }
+  .lang-switch a { text-decoration: none !important; border: none !important; opacity: 0.45; transition: opacity 0.3s, transform 0.2s; display: inline-block; }
+  .lang-switch a:hover { opacity: 0.85; transform: scale(1.1); }
+  .lang-switch a.active { opacity: 1; transform: scale(1.15); }
+  .hero{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;padding-top:80px;}
+  .hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 7%;background:var(--white);}
+  .hero-kicker{font-family:var(--sans);font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:0;animation:fadeUp 1s 0.2s forwards;}
+  .hero-headline{font-family:var(--serif);font-size:clamp(2.8rem,5vw,6rem);font-weight:400;color:var(--black);line-height:1.05;opacity:0;animation:fadeUp 1.2s 0.4s forwards;}
+  .hero-headline em{font-style:italic;}
+  .hero-cta{margin-top:48px;opacity:0;animation:fadeUp 1s 0.9s forwards;}
+  .hero-right{position:relative;overflow:hidden;}
+  .hero-right img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:var(--cream);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .split{display:grid;grid-template-columns:1fr 1fr;margin:0 0 0 7%;}
+  .split.reverse{margin:0 7% 0 0;direction:rtl;}
+  .split.reverse>*{direction:ltr;}
+  .split-img{aspect-ratio:4/3;overflow:hidden;}
+  .split-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.8s cubic-bezier(0.22,1,0.36,1);display:block;}
+  .split-img:hover img{transform:scale(1.04);}
+  .split-text{padding:80px 7% 80px 8%;display:flex;flex-direction:column;justify-content:center;}
+  .split-kicker{font-family:var(--sans);font-size:0.95rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--light);margin-bottom:24px;opacity:0;transform:translateY(20px);transition:opacity 0.9s 0.1s cubic-bezier(0.22,1,0.36,1),transform 0.9s 0.1s cubic-bezier(0.22,1,0.36,1);}
+  .split-kicker.visible{opacity:1;transform:translateY(0);}
+  .split-headline{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);font-weight:400;line-height:1.2;margin-bottom:32px;opacity:0;transform:translateY(25px);transition:opacity 1s 0.2s cubic-bezier(0.22,1,0.36,1),transform 1s 0.2s cubic-bezier(0.22,1,0.36,1);}
+  .split-headline.visible{opacity:1;transform:translateY(0);}
+  .split-headline em{font-style:italic;}
+  .split-body{font-family:var(--sans);font-size:0.95rem;line-height:1.8;color:var(--mid);margin-bottom:20px;opacity:0;transform:translateY(20px);transition:opacity 1s 0.3s cubic-bezier(0.22,1,0.36,1),transform 1s 0.3s cubic-bezier(0.22,1,0.36,1);}
+  .split-body.visible{opacity:1;transform:translateY(0);}
+  .split-link{font-family:var(--sans);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);border:1.5px solid var(--black);background:transparent;text-decoration:none;padding:14px 28px;display:inline-block;margin-top:28px;transition:background 0.3s,color 0.3s,border-color 0.3s;opacity:0;transform:translateY(15px);}
+  .split-link.visible{opacity:1;transform:translateY(0);}
+  .split-link:hover{background:var(--gold);border-color:var(--gold);color:var(--white);}
+  .jean-section{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:100px 7%;background:var(--white);align-items:start;}
+  .achievements-table{width:100%;border-collapse:collapse;font-family:var(--sans);}
+  .achievements-table thead tr{border-bottom:2px solid var(--black);}
+  .achievements-table th{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--light);font-weight:500;padding:0 0 16px;text-align:left;}
+  .achievements-table th:last-child{text-align:right;}
+  .achievements-table td{font-size:0.9rem;color:var(--black);padding:18px 0;border-bottom:1px solid rgba(26,25,23,0.1);font-weight:400;}
+  .achievements-table td:first-child{color:var(--gold);font-size:0.8rem;white-space:nowrap;}
+  .achievements-table td:last-child{text-align:right;font-style:italic;color:var(--mid);}
+  .session-section{padding:100px 7%;background:var(--black);color:var(--white);overflow:hidden;}
+  .session-header{margin-bottom:80px;max-width:600px;}
+  .session-header .split-kicker{color:var(--gold);opacity:1;transform:none;transition:none;}
+  .session-title{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);font-weight:400;color:var(--white);line-height:1.2;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .session-title.visible{opacity:1;transform:translateY(0);}
+  .session-timeline{position:relative;display:grid;grid-template-columns:repeat(4,1fr);}
+  .session-timeline::before{content:'';position:absolute;top:10px;left:0;right:0;height:1px;background:rgba(250,250,248,0.2);}
+  .session-step{padding:0 40px 0 0;opacity:0;transform:translateY(20px);transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1);}
+  .session-step.visible{opacity:1;transform:translateY(0);}
+  .step-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);margin-bottom:28px;position:relative;z-index:1;}
+  .step-time{font-family:var(--sans);font-size:0.65rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+  .step-title{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--white);margin-bottom:16px;}
+  .step-body{font-family:var(--sans);font-size:0.85rem;line-height:1.8;color:rgba(250,250,248,0.55);}
+  .for-section{padding:100px 7%;background:var(--cream);}
+  .for-title{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);font-weight:400;line-height:1.2;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .for-title.visible{opacity:1;transform:translateY(0);}
+  .for-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:60px;}
+  .for-card{border-top:1px solid rgba(26,25,23,0.15);padding-top:28px;opacity:0;transform:translateY(20px);transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1);}
+  .for-card.visible{opacity:1;transform:translateY(0);}
+  .for-num{font-family:var(--sans);font-size:0.68rem;letter-spacing:0.28em;color:var(--gold);margin-bottom:16px;}
+  .for-name{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:14px;}
+  .for-body{font-family:var(--sans);font-size:0.95rem;line-height:1.75;color:var(--mid);}
+  .testimonials-section{padding:100px 7%;background:var(--white);}
+  .testimonials-title{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);font-weight:400;line-height:1.2;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .testimonials-title.visible{opacity:1;transform:translateY(0);}
+  .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:60px;}
+  .testimonial-card{border-top:1px solid rgba(26,25,23,0.15);padding-top:28px;opacity:0;transform:translateY(20px);transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1);}
+  .testimonial-card.visible{opacity:1;transform:translateY(0);}
+  .testimonial-text{font-family:var(--serif);font-size:1rem;font-style:italic;line-height:1.75;margin-bottom:20px;}
+  .testimonial-attr{font-family:var(--sans);font-size:0.75rem;letter-spacing:0.15em;color:var(--light);text-transform:uppercase;}
+  .cta-band{display:grid;grid-template-columns:1fr 1fr;background:var(--black);padding:80px 7%;gap:80px;align-items:center;}
+  .cta-left{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3.8rem);font-weight:400;color:var(--white);line-height:1.1;opacity:0;transform:translateY(25px);transition:opacity 1s cubic-bezier(0.22,1,0.36,1),transform 1s cubic-bezier(0.22,1,0.36,1);}
+  .cta-left.visible{opacity:1;transform:translateY(0);}
+  .cta-left em{font-style:italic;color:var(--gold);}
+  .cta-right{opacity:0;transform:translateY(25px);transition:opacity 1s 0.2s cubic-bezier(0.22,1,0.36,1),transform 1s 0.2s cubic-bezier(0.22,1,0.36,1);}
+  .cta-right.visible{opacity:1;transform:translateY(0);}
+  .cta-body{font-family:var(--sans);font-size:0.95rem;color:rgba(250,250,248,0.65);line-height:1.8;margin-bottom:32px;}
+  .cta-btn{display:inline-block;font-family:var(--sans);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--white);padding:16px 36px;text-decoration:none;font-weight:500;transition:background 0.3s,color 0.3s;}
+  .cta-btn:hover{background:var(--gold);color:var(--white);}
+  footer{background:var(--black);padding:60px 7%;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;}
+  .footer-brand{font-family:var(--serif);font-size:1.1rem;color:var(--white);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;}
+  .footer-tag{font-family:var(--sans);font-size:0.75rem;color:rgba(255,255,255,0.35);font-style:italic;margin-bottom:24px;}
+  .footer-copy{font-family:var(--sans);font-size:0.72rem;color:rgba(255,255,255,0.25);}
+  .footer-col h4{font-family:var(--sans);font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;}
+  .footer-col a{display:block;font-family:var(--sans);font-size:0.78rem;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:10px;transition:color 0.25s;}
+  .footer-col a:hover{color:rgba(255,255,255,0.9);}
+  .page-transition{position:fixed;inset:0;background:var(--black);z-index:9000;transform:translateY(100%);pointer-events:none;}
+  .page-transition.entering{animation:slideUp 0.5s cubic-bezier(0.76,0,0.24,1) forwards;}
+  .page-transition.leaving{transform:translateY(0);animation:slideDown 0.5s cubic-bezier(0.76,0,0.24,1) 0.1s forwards;}
+  @keyframes slideUp{from{transform:translateY(0);}to{transform:translateY(-100%);}}
+  @keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="page-transition" id="page-transition"></div>
+
+<nav id="nav" class="dark">
+  <div class="nav-left">
+    <a href="shooting-school-fr.html">L'École de Tir</a>
+    <a href="estate-fr.html">Le Domaine</a>
+    <a href="gallery-fr.html">Galerie</a>
+  </div>
+  <a class="nav-logo-img" href="index-fr.html"><img src="https://i.imgur.com/s2o9C6r.png" alt="Château de Montardy"></a>
+  <div class="nav-right">
+
+    <a href="region-fr.html">La Région</a>
+    <a href="booking-fr.html" class="nav-book">Réserver un Appel</a>
+    <div class="lang-switch"><a href="shooting-school.html"><img src="https://flagcdn.com/w40/gb.png" width="28" height="20" alt="English" style="border-radius:2px;display:block;"></a><a href="shooting-school-fr.html" class="active"><img src="https://flagcdn.com/w40/fr.png" width="28" height="20" alt="Français" style="border-radius:2px;display:block;"></a></div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-kicker">L'École de Tir · Château de Montardy</p>
+    <h1 class="hero-headline">Améliorer vos performances par le jeu. Méthode d'apprentissage par le jeu (MAJ)</h1>
+    <div class="hero-cta">
+      <a href="booking-fr.html" class="split-link" style="margin-top:0;opacity:1;transform:none;">Réserver un Appel Découverte</a>
+      <div style="margin-top:24px;border:1px solid rgba(26,25,23,0.18);padding:20px 24px;max-width:480px;background:rgba(255,255,255,0.6);">
+        <p style="font-family:var(--sans);font-size:0.78rem;line-height:1.75;color:var(--mid);"><strong style="font-family:var(--sans);color:var(--black);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:10px;">Définition de la MAJ</strong>La MAJ (méthode d'apprentissage par le jeu) est une approche éprouvée. Lors d'une leçon de tir, un certain nombre de répétitions est nécessaire pour intégrer et appliquer les conseils reçus. En introduisant une dimension de compétition entre deux personnes ou plus, ces conseils sont assimilés et mis en pratique immédiatement. La MAJ favorise ainsi une progression nettement plus rapide et plus amusante.</p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://i.imgur.com/wTu55i9.jpg" alt="Jean du Lau sur le terrain">
+  </div>
+</section>
+
+<!-- JEAN BANNER -->
+<div style="padding:60px 7% 0;background:var(--white);">
+  <h2 style="font-family:var(--serif);font-size:clamp(2rem,4vw,4.5rem);font-weight:400;color:var(--black);line-height:1.05;border-bottom:1px solid rgba(26,25,23,0.12);padding-bottom:32px;margin-bottom:32px;">Jean du Lau d'Allemans</h2>
+  <p style="font-family:var(--sans);font-size:0.95rem;line-height:1.8;color:var(--mid);max-width:900px;margin-bottom:16px;">Champion de parcours de chasse et de compak sporting. Membre de l'Équipe Nationale de France pendant de nombreuses années. Entré une nouvelle fois en Équipe en 2026.</p>
+  <p style="font-family:var(--sans);font-size:0.95rem;line-height:1.8;color:var(--mid);max-width:900px;">Jean enseigne la chasse au vol depuis 35 ans. Il a donné des cours dans deux écoles américaines — Hudson Farm Shooting School dans le New Jersey et Pine Creek Sporting Club en Pennsylvanie — ainsi qu'à Paris au Ball-Trap de Fleurines, et au Château de Janvry au sud de Paris.</p>
+</div>
+
+<div style="padding:48px 7% 100px;background:var(--white);" id="jean">
+
+  <!-- Row -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:2px solid var(--black);padding-top:0;margin-bottom:0;">
+    <div style="font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--light);padding:16px 0;">Année</div>
+    <div style="font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--light);padding:16px 24px;">Accomplissements</div>
+    <div style="font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--light);padding:16px 24px;"></div>
+  </div>
+
+  <!-- 1998 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">1998</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Équipe de France PC et CS<br>
+      Création du 2ème challenge de tir de « La Maison de la Chasse »<br>
+      3ème par Équipe Nationale au Championnat du Monde de PC — San Antonio, Texas
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Partenariat avec François Landolt pour la création de l'école de tir La Grande Commune (Ouest Parisien)<br>
+      Maître Tireur
+    </div>
+  </div>
+
+  <!-- 1999 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">1999</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Équipe de France PC et CS<br>
+      Champion de France CS — Le Rabot, Lamotte Beuvron<br>
+      Champion de France PC — Signe<br>
+      Champion du Monde PC par Équipe — Thiers, France
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Entrée en Équipe « Pro » du Cercle du Bois de Boulogne (Tir aux Pigeons)<br>
+      Maître Tireur<br>
+      Sponsorisé par l'encartoucheur Tunet
+    </div>
+  </div>
+
+  <!-- 2000 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2000</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Équipe de France PC et CS<br>
+      Champion du Monde PC par Équipe — Belgique<br>
+      Champion d'Europe CS par Équipe — Espagne
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Maître Tireur<br>
+      <em style="color:var(--mid);">Départ pour les États-Unis</em>
+    </div>
+  </div>
+
+  <!-- 2001 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2001</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Entrée en catégorie Master Class Shooter dans la NSCA (National Sporting Clay Association)
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Cours de tir à Hudson Farm Shooting School, New Jersey
+    </div>
+  </div>
+
+  <!-- 2002 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2002</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      High Over All (HOA) — New York State Championship, Mid Hudson, NY<br>
+      High Over All (HOA) — National Fitasc Great American, Hopkins, DE
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      High Over All (HOA) — Grand Prix Fitasc, Hopkins, DE
+    </div>
+  </div>
+
+  <!-- 2003 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2003</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      High Over All (HOA) — Big Sea Food Blast, M&amp;M, NJ<br>
+      High Over All (HOA) — Master Cup VI, Addieville, RI
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      High Over All (HOA) — New Jersey State Championship, M&amp;M, NJ<br>
+      US Open — Hopkins, DE (Master Class)
+    </div>
+  </div>
+
+  <!-- 2004 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2004</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Connecticut State Championship, HOA — Fairfield, CT
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;"></div>
+  </div>
+
+  <!-- 2005 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2005</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      High Over All (HOA) — National Fitasc, MI<br>
+      Connecticut State Championship, HOA
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;"></div>
+  </div>
+
+  <!-- 2006 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2006</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      High Over All (HOA) — National Fitasc, MA<br>
+      High Over All (HOA) — Empire Cup, NY<br>
+      High Over All (HOA) — Connecticut State Championship, CT<br>
+      High Over All (HOA) — The Crucible, CT
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Création d'un partenariat avec Stephen Myers pour l'ouverture d'une école de tir en Floride : Pine Creek Sporting Club
+    </div>
+  </div>
+
+  <!-- 2007-2009 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);border-bottom:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2007–2009</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      Ouverture de l'école de tir en Floride : Pine Creek — la plus grande école de tir au monde<br>
+      Connecticut State Championship, HOA<br>
+      Ruger Cup North America — RI, HOA
+    </div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">
+      US Open — CA, 1ère place Master<br>
+      National Fitasc — FL, HOA<br>
+      Entrée en International Master Class Shooter
+    </div>
+  </div>
+
+  <!-- 2010-2020 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2010–2020</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">Maître d'arme au stand de Fleurines, Paris</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">Président du groupe Chasse et Tir au Travellers Club, Paris</div>
+  </div>
+
+  <!-- 2017 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2017</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">Retour en Équipe de France</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">Vice-Champion d'Europe par Équipe</div>
+  </div>
+
+  <!-- 2017-2021 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2017–2021</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">Maître d'arme au Château de Janvry, au sud de Paris</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;"></div>
+  </div>
+
+  <!-- 2021-2026 -->
+  <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-top:1px solid rgba(26,25,23,0.1);border-bottom:2px solid var(--black);padding:8px 0;">
+    <div style="font-family:var(--sans);font-size:0.9rem;color:var(--gold);font-weight:500;padding-top:2px;">2021–2026</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">Ouverture de l'école de tir au Château de Montardy<br>Retour en Équipe de France<br>Vice-Champion d'Europe</div>
+    <div style="font-family:var(--sans);font-size:0.85rem;color:var(--black);line-height:1.6;padding:0 24px;">Champion de France</div>
+  </div>
+
+</div>
+
+
+<div class="split reverse"<div class="split reverse" id="method">
+  <div class="split-img">
+    <img src="https://i.imgur.com/gVXDHVT.jpg" alt="Jean sur le terrain">
+  </div>
+  <div class="split-text">
+    <p class="split-kicker reveal">La Méthode</p>
+    <h2 class="split-headline reveal">La plupart des instructeurs corrigent votre tir. Jean vous observe et reprend chaque détail (posture, épaulement, équilibre...)<br><em>Il vous apprend à marcher avant de courir.</em></h2>
+    <p class="split-body reveal">La plupart des chasseurs plafonnent parce qu'on leur a appris une méthode qui disparaît sous la pression. L'approche de Jean commence par l'observation. Il vous regarde tirer avant de dire un mot. Dès la première fois, il a identifié vos difficultés et votre façon de tirer. Au lieu de changer cette technique, il va l'améliorer pour qu'elle reste bien la votre.</p>
+    <p class="split-body reveal">"Jean a corrigé en une session ce que d'autres instructeurs n'ont pas réussi en une saison."</p>
+  </div>
+</div>
+
+<section class="session-section" id="session">
+  <div class="session-header">
+    <p class="split-kicker" style="color:var(--gold);font-family:var(--sans);font-size:0.95rem;letter-spacing:0.28em;text-transform:uppercase;margin-bottom:24px;display:block;">L'Expérience</p>
+    <h2 class="session-title reveal">Une journée<br><em>à Montardy</em></h2>
+  </div>
+  <div class="session-timeline">
+    <div class="session-step reveal">
+      <div class="step-dot"></div>
+      <div class="step-time">Matin · 8h00</div>
+      <h3 class="step-title">Le Briefing</h3>
+      <p class="step-body">Vous commencez avec Jean autour d'un café. Il vous pose des questions sur votre expérience, vos objectifs, ce qui n'a pas fonctionné avant. Pas de formulaires. Pas de questionnaires. Une conversation.</p>
+    </div>
+    <div class="session-step reveal">
+      <div class="step-dot"></div>
+      <div class="step-time">Milieu de matinée · 10h00</div>
+      <h3 class="step-title">Sur le Terrain</h3>
+      <p class="step-body">Jean vous observe tirer en silence sur deux ou trois postes afin d'analyser la technique que vous utilisez le plus. Son rôle ensuite, est de faire évoluer votre propre technique.</p>
+    </div>
+    <div class="session-step reveal">
+      <div class="step-dot"></div>
+      <div class="step-time">Après-midi · 14h00</div>
+      <h3 class="step-title">Le Travail</h3>
+      <p class="step-body">C'est là que la séance change. Jean introduit une correction, jamais plus d'une à la fois. Vous la répétez jusqu'à ce qu'elle devienne un mouvement naturel.</p>
+    </div>
+    <div class="session-step reveal">
+      <div class="step-dot"></div>
+      <div class="step-time">Soirée · 19h00</div>
+      <h3 class="step-title">Le Bilan</h3>
+      <p class="step-body">De retour au château, Jean vous explique ce qu'il a observé et sur quoi vous concentrer avant la prochaine séance. Le dîner suit — cuisine périgourdine, vin du château.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="testimonials-section">
+  <p class="split-kicker reveal" style="display:block;margin-bottom:16px;">Ce Que Disent les Invités</p>
+  <h2 class="testimonials-title reveal">Les Résultats<br><em>Parlent d'Eux-Mêmes</em></h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <p class="testimonial-text">"Je suis venu au château après avoir suivi le cours en ligne. Deux séances avec Jean en personne ont changé plus de six mois de pratique seul. Le défaut qu'il a trouvé en vingt minutes était là depuis des années."</p>
+      <p class="testimonial-attr">— J.H., Royaume-Uni</p>
+    </div>
+    <div class="testimonial-card reveal">
+      <p class="testimonial-text">"J'ai chassé en Argentine, en Écosse et en Espagne. Rien ne se compare à ce que fait Jean sur ces terres. La combinaison de son coaching et du domaine sont uniques."</p>
+      <p class="testimonial-attr">— R.M., États-Unis</p>
+    </div>
+    <div class="testimonial-card reveal">
+      <p class="testimonial-text">"J'étais un grand débutant. Jean a construit ma technique depuis les bases sur trois jours. Au dernier matin, je touchais des oiseaux que je n'aurais jamais dû toucher. Le château a rendu tout cela extraordinaire."</p>
+      <p class="testimonial-attr">— T.B., France</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band" id="cta">
+  <div class="cta-left reveal">Réservez votre<br><em>Séance avec Jean</em></div>
+  <div class="cta-right reveal">
+    <p class="cta-body">Un appel de 20 minutes avec Jean pour comprendre où vous en êtes, ce que vous souhaitez accomplir, et pour construire le programme idéal autour de votre séjour.</p>
+    <a href="booking-fr.html" class="cta-btn">Réserver un Appel Découverte</a>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-brand">Château de Montardy</div>
+    <div class="footer-tag">Domaine Privé · Dordogne, France</div>
+    <div class="footer-copy">© 2025 Château de Montardy. Tous droits réservés.</div>
+  </div>
+  <div class="footer-col">
+    <h4>Navigation</h4>
+    <a href="index-fr.html">Accueil</a>
+    <a href="shooting-school-fr.html">L'École de Tir</a>
+    <a href="estate-fr.html">Le Domaine</a>
+    <a href="region-fr.html">La Région</a>
+    <a href="gallery-fr.html">Galerie</a>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <a href="mailto:contact@chateaudemontardy.com">contact@chateaudemontardy.com</a>
+    <a href="tel:+33500000000">+33 (0)5 00 00 00 00</a>
+    <a href="booking-fr.html">Réserver un Appel →</a>
+  </div>
+</footer>
+
+<script>
+  
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));});
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{if(window.scrollY>80){nav.classList.add('scrolled');nav.classList.remove('dark');}else{nav.classList.remove('scrolled');nav.classList.add('dark');}});
+  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('.split-kicker,.split-headline,.split-body,.split-link').forEach((el,i)=>{setTimeout(()=>el.classList.add('visible'),i*100);});entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.15,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal,.session-title,.session-step,.for-title,.for-card,.testimonials-title,.testimonial-card,.cta-left,.cta-right').forEach(el=>observer.observe(el));
+  const transition=document.getElementById('page-transition');
+  document.querySelectorAll('a[href$=".html"]').forEach(link=>{link.addEventListener('click',e=>{const href=link.getAttribute('href');e.preventDefault();transition.classList.add('leaving');setTimeout(()=>{window.location.href=href;},600);});});
+  window.addEventListener('pageshow',()=>{transition.classList.add('entering');setTimeout(()=>transition.classList.remove('entering'),800);});
+</script>
+
+
+</body></html>

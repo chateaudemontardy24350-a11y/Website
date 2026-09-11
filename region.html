@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Region — Château de Montardy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --white: #fafaf8; --cream: #f5f3ef; --black: #1a1917; --mid: #5a5550; --light: #9a948e; --gold: #b89a6a; --serif: 'Playfair Display', serif; --sans: 'Inter', sans-serif; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--black); font-family: var(--serif); overflow-x: hidden;  }
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1px 56px;}
+  nav.dark .nav-left a,nav.dark .nav-right a{color:rgba(255,255,255,0.85);}
+  nav.scrolled{background:rgba(100,98,95,0.96);backdrop-filter:blur(12px);}
+  nav.scrolled .nav-left a,nav.scrolled .nav-right a{color:rgba(255,255,255,0.9);text-shadow:none;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  nav.scrolled .nav-logo-img img{filter:brightness(0) invert(1);opacity:0.9;}
+  nav.scrolled .nav-book{color:rgba(255,255,255,0.9)!important;border-bottom:none;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  .nav-left,.nav-right{display:flex;gap:88px;align-items:center;}
+  .nav-left a,.nav-right a{font-family:var(--sans);font-size:0.9rem;letter-spacing:0.3em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,1);font-weight:500;transition:color 0.3s;text-shadow:0 1px 16px rgba(0,0,0,0.8);}
+  .nav-left a:hover,.nav-right a:hover{color:var(--gold);}
+  .nav-logo-img img{height:116px;width:auto;filter:brightness(0) invert(1);opacity:0.95;}
+  .nav-logo-img { flex-shrink: 0; margin: 0 24px; }
+  .lang-switch{display:flex;align-items:center;gap:8px;margin-left:24px;}
+  .lang-switch a{text-decoration:none!important;border:none!important;opacity:0.45;transition:opacity 0.3s,transform 0.2s;display:inline-block;}
+  .lang-switch a:hover{opacity:0.85;transform:scale(1.1);}
+  .lang-switch a.active{opacity:1;transform:scale(1.15);}
+</style>
+</head>
+<body>
+
+<div class="page-transition" id="page-transition"></div>
+
+<nav id="nav" class="dark">
+  <div class="nav-left">
+    <a href="shooting-school.html">The Shooting School</a>
+    <a href="estate.html">The Estate</a>
+    <a href="gallery.html">Gallery</a>
+  </div>
+  <a href="index.html" class="nav-logo-img"><img src="https://i.imgur.com/s2o9C6r.png" alt="Château de Montardy"></a>
+  <div class="nav-right">
+
+    <a href="region.html">The Region</a>
+    <a href="booking.html" class="nav-book">Book a Discovery Call</a>
+    <div class="lang-switch"><a href="region.html" class="active"><img src="https://flagcdn.com/w40/gb.png" width="28" height="20" alt="English" style="border-radius:2px;display:block;"></a><a href="region-fr.html"><img src="https://flagcdn.com/w40/fr.png" width="28" height="20" alt="Français" style="border-radius:2px;display:block;"></a></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-kicker">The Region</p>
+    <h1 class="hero-headline">The Dordogne.</h1>
+    <p class="hero-sub">One of France's last great wildernesses.</p>
+  </div>
+</section>
+
+<!-- INTRO -->
+<div class="intro">
+  <p class="intro-puncher reveal">The shooting brings people here.<br><em>The region keeps them coming back.</em></p>
+  <p class="intro-sub reveal">Prehistoric caves. Medieval villages. Rivers, vineyards, and markets that have run for six hundred years. France's most beautiful region, and still one of its least discovered.</p>
+</div>
+
+<!-- LANDSCAPE -->
+<div class="split" id="landscape">
+  <div class="split-img">
+    <img src="https://i.imgur.com/tdXPhwN.jpg" alt="The Dordogne Valley">
+  </div>
+  <div class="split-text">
+    <p class="split-kicker reveal">The Landscape</p>
+    <h2 class="split-headline reveal">The Périgord Noir.<br><em>Forest, Cliffs, Water.</em></h2>
+    <p class="split-body reveal">The Vézère Valley, the Dordogne River, the forests of the Périgord Noir. Limestone cliffs dropping to clear water. Oak forest that goes on for miles. The kind of landscape that changes with every season — misty autumn mornings, summer sunflowers, winter truffle markets, spring light on the river.</p>
+    <p class="split-body reveal">There is nowhere in France quite like it. And almost no one outside France knows it as well as they should.</p>
+  </div>
+</div>
+
+<!-- FOOD & WINE -->
+<div class="split reverse" id="food">
+  <div class="split-img">
+    <img src="https://i.imgur.com/J7D2GTf.jpg" alt="Food and Wine of the Périgord">
+  </div>
+  <div class="split-text">
+    <p class="split-kicker reveal">Food & Wine</p>
+    <h2 class="split-headline reveal">Foie Gras. Truffles.<br><em>Bordeaux on the Doorstep.</em></h2>
+    <p class="split-body reveal">The Périgord produces some of the finest food in France. Foie gras and duck confit from the farms around the château. Black Périgord truffles in winter — the finest in the world, and available here at their source. Bergerac wines a short drive away. Bordeaux and Saint-Émilion within reach for a day trip.</p>
+    <p class="split-body reveal">The weekly markets at Sarlat, Bergerac, and Périgueux are worth the visit alone. For a certain kind of guest, the food and wine is as big a draw as the shooting.</p>
+    <p class="split-body reveal">We maintain a curated list of restaurants we highly recommend in the area — some of the finest tables in France, from market-town bistros to Michelin-starred rooms in the valley. Shared with every guest upon booking.</p>
+  </div>
+</div>
+
+<!-- PHOTO GRID -->
+
+
+<!-- HISTORY -->
+<div class="split" id="history">
+  <div class="split-img">
+    <img src="https://i.imgur.com/UPfJMFj.jpg" alt="Medieval Villages of the Dordogne">
+  </div>
+  <div class="split-text">
+    <p class="split-kicker reveal">Medieval Villages & History</p>
+    <h2 class="split-headline reveal">Thirty Villages.<br><em>All Within an Hour.</em></h2>
+    <p class="split-body reveal">The Dordogne is home to some of the most beautiful medieval villages in France — more than thirty within an hour of the château, each one distinct. Brantôme, built on an island in the Dronne river, known as the Venice of the Périgord. Sarlat-la-Canéda, whose medieval centre has barely changed in five centuries. Domme, perched on a cliff above the river with views across the valley. La Roque-Gageac, clinging to a limestone wall at the water's edge.</p>
+    <p class="split-body reveal">Further afield: Beynac, Castelnaud, Les Eyzies, Saint-Léon-sur-Vézère. Each one worth an afternoon. At Lascaux and Font-de-Gaume, prehistoric cave paintings that predate every civilization you have ever studied — nowhere else in Europe can you see art of this quality, this age, and this concentration.</p>
+  </div>
+</div>
+
+<!-- OUTDOORS -->
+<div class="highlights" id="outdoors">
+  <p class="split-kicker reveal" style="display:block; margin-bottom: 16px; opacity:0; transform: translateY(20px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);">Beyond the Grounds</p>
+  <h2 class="highlights-title reveal">After Shooting<br><em>Activities.</em></h2>
+  <div class="highlights-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">River</div>
+      <div class="highlight-name">Canoeing the Dordogne</div>
+      <p class="highlight-body">Some of the finest canoeing in France. Half-day and full-day routes through the valley, past limestone cliffs and medieval villages.</p>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">Trail</div>
+      <div class="highlight-name">Hiking the GR Trails</div>
+      <p class="highlight-body">Long-distance trails through oak forest, past prehistoric sites, along valley ridges. The GR36 passes close to the château.</p>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">Road</div>
+      <div class="highlight-name">Cycling the Valley</div>
+      <p class="highlight-body">Quiet roads and dedicated cycling paths along the Dordogne river. One of the most scenic cycling routes in France.</p>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">River</div>
+      <div class="highlight-name">Fishing</div>
+      <p class="highlight-body">The Dordogne and Vézère rivers hold salmon, trout, and pike. Private stretches available. A natural complement to a shooting stay.</p>
+    </div>
+  </div>
+  <div class="highlights-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 0;">
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">Village</div>
+      <div class="highlight-name">Village Walks</div>
+      <p class="highlight-body">Thirty medieval villages within an hour. Brantôme, Sarlat, Domme, La Roque-Gageac. Each one worth an afternoon on foot.</p>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">Cave</div>
+      <div class="highlight-name">Prehistoric Caves</div>
+      <p class="highlight-body">Lascaux and Font-de-Gaume are within reach. Nowhere else in Europe can you see prehistoric cave art of this quality.</p>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">Market</div>
+      <div class="highlight-name">Weekly Markets</div>
+      <p class="highlight-body">Sarlat on Saturday, Bergerac on Wednesday, Périgueux on Wednesday and Saturday. Truffles, foie gras, local cheese, Périgord wine.</p>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="highlight-icon">Wine</div>
+      <div class="highlight-name">Wine Country</div>
+      <p class="highlight-body">Bergerac vineyards on the doorstep. Saint-Émilion and Bordeaux within 90 minutes for a full day trip through some of France's finest appellations.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<section class="map-section" id="map">
+  <p class="split-kicker reveal" style="display:block; margin-bottom: 16px; font-family: var(--sans); font-size: 0.95rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--light); opacity:0; transform: translateY(20px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);">Getting Around</p>
+  <h2 class="map-title reveal">Château de Montardy<br><em>at the Heart of the Dordogne</em></h2>
+  <p class="map-sub reveal">Key villages, airports, and points of interest within an hour's drive.</p>
+  <div class="map-container reveal">
+    <div class="map-placeholder">
+      <p>Interactive map coming soon</p>
+      <a href="https://maps.google.com" target="_blank">Open in Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band" id="cta">
+  <div class="cta-left reveal">Come for the Shooting.<br><em>Stay for Everything Else.</em></div>
+  <div class="cta-right reveal">
+    <p class="cta-body">A 20-minute call to understand what you're looking for and build the ideal visit around your stay at Château de Montardy.</p>
+    <a href="booking.html" class="cta-btn">Book a Discovery Call</a>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-brand">Château de Montardy</div>
+    <div class="footer-tag">Private Estate · Dordogne, France</div>
+    <div class="footer-copy">© 2025 Château de Montardy. All rights reserved.</div>
+  </div>
+  <div class="footer-col">
+    <h4>Navigate</h4>
+    <a href="index.html">Home</a>
+    <a href="shooting-school.html">The Shooting School</a>
+    <a href="estate.html">The Estate</a>
+    <a href="region.html">The Region</a>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <a href="/cdn-cgi/l/email-protection#54373b3a2035372014373c35203135213031393b3a203526302d7a373b39"><span class="__cf_email__" data-cfemail="2e4d41405a4f4d5a6e4d464f5a4b4f5b4a4b4341405a4f5c4a57004d4143">[email&#160;protected]</span></a>
+    <a href="tel:+33500000000">+33 (0)5 00 00 00 00</a>
+    <a href="booking.html">Book a Discovery Call →</a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  
+  document.querySelectorAll('a, button').forEach(el => { el.addEventListener('mouseenter', () => ring.classList.add('hover')); el.addEventListener('mouseleave', () => ring.classList.remove('hover')); });
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { if (window.scrollY > 80) { nav.classList.add('scrolled'); nav.classList.remove('dark'); } else { nav.classList.remove('scrolled'); nav.classList.add('dark'); } });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.split-kicker, .split-headline, .split-body, .split-link').forEach((el, i) => { setTimeout(() => el.classList.add('visible'), i * 100); });
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal, .intro-puncher, .intro-sub, .intro-text, .cta-left, .cta-right, .highlights-title, .highlight-item, .photo-grid-img, .map-title, .map-sub, .map-container').forEach(el => { observer.observe(el); });
+
+  const transition = document.getElementById('page-transition');
+  document.querySelectorAll('a[href$=".html"]').forEach(link => { link.addEventListener('click', e => { const href = link.getAttribute('href'); e.preventDefault(); transition.classL

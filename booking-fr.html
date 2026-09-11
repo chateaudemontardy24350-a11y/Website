@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réserver un Appel — Château de Montardy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  :root{--white:#fafaf8;--cream:#f5f3ef;--black:#1a1917;--mid:#5a5550;--light:#9a948e;--gold:#b89a6a;--serif:'Playfair Display',serif;--sans:'Inter',sans-serif;}
+  html{scroll-behavior:smooth;}body {background:var(--white);color:var(--black);font-family:var(--serif);overflow-x:hidden;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1px 56px;}
+  nav.dark .nav-left a,nav.dark .nav-right a{color:rgba(255,255,255,0.85);}
+  nav.scrolled{background:rgba(100,98,95,0.96);backdrop-filter:blur(12px);}
+  nav.scrolled .nav-left a,nav.scrolled .nav-right a{color:rgba(255,255,255,0.9);text-shadow:none;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  nav.scrolled .nav-logo-img img{filter:brightness(0) invert(1);opacity:0.9;}
+  nav.scrolled .nav-book{color:rgba(255,255,255,0.9)!important;border-bottom:none;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  .nav-left,.nav-right{display:flex;gap:88px;align-items:center;}
+  .nav-left a,.nav-right a{font-family:var(--sans);font-size:0.9rem;letter-spacing:0.3em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,1);font-weight:500;transition:color 0.3s;text-shadow:0 1px 16px rgba(0,0,0,0.8);}
+  .nav-left a:hover,.nav-right a:hover{color:var(--gold);}
+  .nav-logo-img img{height:116px;width:auto;filter:brightness(0) invert(1);opacity:0.95;}
+  .nav-logo-img { flex-shrink: 0; margin: 0 24px; }
+  .lang-switch{display:flex;align-items:center;gap:8px;margin-left:24px;}
+  .lang-switch a{text-decoration:none!important;border:none!important;opacity:0.45;transition:opacity 0.3s,transform 0.2s;display:inline-block;}
+  .lang-switch a:hover{opacity:0.85;transform:scale(1.1);}
+  .lang-switch a.active{opacity:1;transform:scale(1.15);}
+  .booking-hero{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;padding-top:80px;}
+  .booking-left{display:flex;flex-direction:column;justify-content:center;padding:80px 7%;background:var(--black);}
+  .booking-kicker{font-family:var(--sans);font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:0;animation:fadeUp 1s 0.2s forwards;}
+  .booking-headline{font-family:var(--serif);font-size:clamp(2.4rem,4vw,5rem);font-weight:400;color:var(--white);line-height:1.1;opacity:0;animation:fadeUp 1.2s 0.4s forwards;}
+  .booking-headline em{font-style:italic;color:var(--gold);}
+  .booking-desc{font-family:var(--sans);font-size:0.95rem;color:rgba(250,250,248,0.6);line-height:1.8;margin-top:32px;max-width:440px;opacity:0;animation:fadeUp 1s 0.6s forwards;}
+  .booking-right{display:flex;flex-direction:column;justify-content:center;padding:80px 7% 80px 8%;background:var(--white);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .expect-list{margin-top:48px;}
+  .expect-item{display:flex;gap:20px;align-items:flex-start;margin-bottom:32px;opacity:0;transform:translateY(20px);transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1);}
+  .expect-item.visible{opacity:1;transform:translateY(0);}
+  .expect-num{font-family:var(--sans);font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);min-width:28px;margin-top:4px;}
+  .expect-text h4{font-family:var(--serif);font-size:1.1rem;font-weight:400;margin-bottom:6px;color:var(--white);}
+  .expect-text p{font-family:var(--sans);font-size:0.85rem;color:rgba(250,250,248,0.55);line-height:1.7;}
+  .form-title{font-family:var(--serif);font-size:1.8rem;font-weight:400;margin-bottom:8px;opacity:0;animation:fadeUp 1s 0.5s forwards;}
+  .form-sub{font-family:var(--sans);font-size:0.85rem;color:var(--mid);margin-bottom:40px;opacity:0;animation:fadeUp 1s 0.65s forwards;}
+  .form-group{margin-bottom:24px;opacity:0;animation:fadeUp 1s 0.7s forwards;}
+  .form-group label{display:block;font-family:var(--sans);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--light);margin-bottom:8px;font-weight:500;}
+  .form-group input,.form-group select,.form-group textarea{width:100%;font-family:var(--sans);font-size:0.9rem;color:var(--black);background:transparent;border:none;border-bottom:1px solid rgba(26,25,23,0.2);padding:10px 0;outline:none;transition:border-color 0.3s;appearance:none;}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--black);}
+  .form-group textarea{resize:none;height:80px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .form-submit{width:100%;font-family:var(--sans);font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white);background:var(--black);border:none;padding:18px 36px;cursor:pointer;font-weight:500;transition:background 0.3s;margin-top:8px;opacity:0;animation:fadeUp 1s 0.8s forwards;}
+  .form-submit:hover{background:var(--gold);}
+  .form-note{font-family:var(--sans);font-size:0.75rem;color:var(--light);margin-top:16px;line-height:1.6;opacity:0;animation:fadeUp 1s 0.9s forwards;}
+  .reassurance{padding:100px 7%;background:var(--cream);display:grid;grid-template-columns:repeat(3,1fr);gap:60px;}
+  .reassurance-item{border-top:1px solid rgba(26,25,23,0.12);padding-top:28px;opacity:0;transform:translateY(20px);transition:opacity 0.9s cubic-bezier(0.22,1,0.36,1),transform 0.9s cubic-bezier(0.22,1,0.36,1);}
+  .reassurance-item.visible{opacity:1;transform:translateY(0);}
+  .reassurance-label{font-family:var(--sans);font-size:0.65rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+  .reassurance-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;margin-bottom:12px;}
+  .reassurance-body{font-family:var(--sans);font-size:0.85rem;color:var(--mid);line-height:1.75;}
+  footer{background:var(--black);padding:60px 7%;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;}
+  .footer-brand{font-family:var(--serif);font-size:1.1rem;color:var(--white);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;}
+  .footer-tag{font-family:var(--sans);font-size:0.75rem;color:rgba(255,255,255,0.35);font-style:italic;margin-bottom:24px;}
+  .footer-copy{font-family:var(--sans);font-size:0.72rem;color:rgba(255,255,255,0.25);}
+  .footer-col h4{font-family:var(--sans);font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;}
+  .footer-col a{display:block;font-family:var(--sans);font-size:0.78rem;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:10px;transition:color 0.25s;}
+  .footer-col a:hover{color:rgba(255,255,255,0.9);}
+  .page-transition{position:fixed;inset:0;background:var(--black);z-index:9000;transform:translateY(100%);pointer-events:none;}
+  .page-transition.entering{animation:slideUp 0.5s cubic-bezier(0.76,0,0.24,1) forwards;}
+  .page-transition.leaving{transform:translateY(0);animation:slideDown 0.5s cubic-bezier(0.76,0,0.24,1) 0.1s forwards;}
+  @keyframes slideUp{from{transform:translateY(0);}to{transform:translateY(-100%);}}
+  @keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="page-transition" id="page-transition"></div>
+<nav id="nav" class="dark">
+  <div class="nav-left">
+    <a href="shooting-school-fr.html">L'École de Tir</a>
+    <a href="estate-fr.html">Le Domaine</a>
+    <a href="gallery-fr.html">Galerie</a>
+  </div>
+  <a href="index-fr.html" class="nav-logo-img"><img src="https://i.imgur.com/s2o9C6r.png" alt="Château de Montardy"></a>
+  <div class="nav-right">
+
+    <a href="region-fr.html">La Région</a>
+    <a href="booking-fr.html" class="nav-book">Réserver un Appel</a>
+    <div class="lang-switch"><a href="booking.html"><img src="https://flagcdn.com/w40/gb.png" width="28" height="20" alt="English" style="border-radius:2px;display:block;"></a><a href="booking-fr.html" class="active"><img src="https://flagcdn.com/w40/fr.png" width="28" height="20" alt="Français" style="border-radius:2px;display:block;"></a></div>
+  </div>
+</nav>
+<div class="booking-hero">
+  <div class="booking-left">
+    <p class="booking-kicker">Réserver un Appel Découverte</p>
+    <h1 class="booking-headline">20 Minutes.<br><em>Votre Programme Construit.</em></h1>
+    <p class="booking-desc">Une conversation avec Jean pour comprendre où vous en êtes, ce que vous souhaitez accomplir, et pour construire la visite autour de vous spécifiquement. Sans engagement. Juste de la clarté.</p>
+    <div class="expect-list">
+      <div class="expect-item"><div class="expect-num">01</div><div class="expect-text"><h4>Jean évalue votre niveau</h4><p>Que vous soyez débutant complet ou tireur chevronné, Jean adapte tout à votre situation actuelle.</p></div></div>
+      <div class="expect-item"><div class="expect-num">02</div><div class="expect-text"><h4>Votre visite est conçue autour de vous</h4><p>Durée, intensité, timing, qui voyage avec vous. L'appel est là où le programme est construit.</p></div></div>
+      <div class="expect-item"><div class="expect-num">03</div><div class="expect-text"><h4>Vous repartez en sachant exactement à quoi vous attendre</h4><p>À quoi ressemble une journée, sur quoi vous travaillerez, ce que le domaine offre. Rien au hasard.</p></div></div>
+    </div>
+  </div>
+  <div class="booking-right">
+    <h2 class="form-title">Nous Contacter</h2>
+    <p class="form-sub">Pour réserver une date ou poser une question sur un séjour à Montardy, contactez-nous directement :</p>
+    <div style="margin-top:32px;">
+      <div style="margin-bottom:28px;border-top:1px solid rgba(26,25,23,0.12);padding-top:24px;">
+        <div style="font-family:var(--sans);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--light);margin-bottom:10px;">Email</div>
+        <a href="mailto:chassetir@yahoo.com" style="font-family:var(--serif);font-size:1.3rem;color:var(--black);text-decoration:none;">chassetir@yahoo.com</a>
+      </div>
+      <div style="border-top:1px solid rgba(26,25,23,0.12);padding-top:24px;">
+        <div style="font-family:var(--sans);font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--light);margin-bottom:10px;">Téléphone</div>
+        <a href="tel:+33624130105" style="font-family:var(--serif);font-size:1.3rem;color:var(--black);text-decoration:none;">06 24 13 01 05</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="reassurance">
+  <div class="reassurance-item reveal"><div class="reassurance-label">L'Appel</div><div class="reassurance-title">20 minutes avec l'équipe de Jean</div><p class="reassurance-body">Pas un appel de vente. Une vraie conversation pour comprendre ce que vous recherchez et si Montardy est la bonne option pour vous.</p></div>
+  <div class="reassurance-item reveal"><div class="reassurance-label">Le Programme</div><div class="reassurance-title">Conçu autour de vous, pas d'un modèle</div><p class="reassurance-body">Chaque visite à Montardy est différente. L'appel est là où votre programme est conçu — durée, intensité, timing, ce que le domaine offre.</p></div>
+  <div class="reassurance-item reveal"><div class="reassurance-label">Le Domaine</div><div class="reassurance-title">Disponibilités limitées chaque saison</div><p class="reassurance-body">Montardy accueille un petit nombre d'invités par saison. L'appel découverte est la première étape pour réserver vos dates.</p></div>
+</div>
+<footer>
+  <div><div class="footer-brand">Château de Montardy</div><div class="footer-tag">Domaine Privé · Dordogne, France</div><div class="footer-copy">© 2025 Château de Montardy. Tous droits réservés.</div></div>
+  <div class="footer-col"><h4>Navigation</h4><a href="index-fr.html">Accueil</a><a href="shooting-school-fr.html">L'École de Tir</a><a href="estate-fr.html">Le Domaine</a><a href="region-fr.html">La Région</a><a href="gallery-fr.html">Galerie</a></div>
+  <div class="footer-col"><h4>Contact</h4><a href="mailto:contact@chateaudemontardy.com">contact@chateaudemontardy.com</a><a href="tel:+33500000000">+33 (0)5 00 00 00 00</a></div>
+</footer>
+<script>
+  
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));});
+  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.15});
+  document.querySelectorAll('.reassurance-item,.expect-item').forEach(el=>observer.observe(el));
+  const transition=document.getElementById('page-transition');
+  document.querySelectorAll('a[href$=".html"]').forEach(link=>{link.addEventListener('click',e=>{const href=link.getAttribute('href');e.preventDefault();transition.classList.add('leaving');setTimeout(()=>{window.location.href=href;},600);});});
+  window.addEventListener('pageshow',()=>{transition.classList.add('entering');setTimeout(()=>transition.classList.remove('entering'),800);});
+</script>
+</body>
+</html>

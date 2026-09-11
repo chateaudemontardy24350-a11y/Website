@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Discovery Call — Château de Montardy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --white: #fafaf8; --cream: #f5f3ef; --black: #1a1917; --mid: #5a5550; --light: #9a948e; --gold: #b89a6a; --serif: 'Playfair Display', serif; --sans: 'Inter', sans-serif; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--black); font-family: var(--serif); overflow-x: hidden;  }
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1px 56px;}
+  nav.dark .nav-left a,nav.dark .nav-right a{color:rgba(255,255,255,0.85);}
+  nav.scrolled{background:rgba(100,98,95,0.96);backdrop-filter:blur(12px);}
+  nav.scrolled .nav-left a,nav.scrolled .nav-right a{color:rgba(255,255,255,0.9);text-shadow:none;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  nav.scrolled .nav-logo-img img{filter:brightness(0) invert(1);opacity:0.9;}
+  nav.scrolled .nav-book{color:rgba(255,255,255,0.9)!important;border-bottom:none;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.4);}
+  .nav-left,.nav-right{display:flex;gap:88px;align-items:center;}
+  .nav-left a,.nav-right a{font-family:var(--sans);font-size:0.9rem;letter-spacing:0.3em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,1);font-weight:500;transition:color 0.3s;text-shadow:0 1px 16px rgba(0,0,0,0.8);}
+  .nav-left a:hover,.nav-right a:hover{color:var(--gold);}
+  .nav-logo-img img{height:116px;width:auto;filter:brightness(0) invert(1);opacity:0.95;}
+  .nav-logo-img { flex-shrink: 0; margin: 0 24px; }
+  .lang-switch{display:flex;align-items:center;gap:8px;margin-left:24px;}
+  .lang-switch a{text-decoration:none!important;border:none!important;opacity:0.45;transition:opacity 0.3s,transform 0.2s;display:inline-block;}
+  .lang-switch a:hover{opacity:0.85;transform:scale(1.1);}
+  .lang-switch a.active{opacity:1;transform:scale(1.15);}
+</style>
+</head>
+<body>
+
+<div class="page-transition" id="page-transition"></div>
+
+<nav id="nav" class="dark">
+  <div class="nav-left">
+    <a href="shooting-school.html">The Shooting School</a>
+    <a href="estate.html">The Estate</a>
+    <a href="gallery.html">Gallery</a>
+  </div>
+  <a href="index.html" class="nav-logo-img"><img src="https://i.imgur.com/s2o9C6r.png" alt="Château de Montardy"></a>
+  <div class="nav-right">
+
+    <a href="region.html">The Region</a>
+    <a href="booking.html" class="nav-book">Book a Discovery Call</a>
+    <div class="lang-switch"><a href="booking.html" class="active"><img src="https://flagcdn.com/w40/gb.png" width="28" height="20" alt="English" style="border-radius:2px;display:block;"></a><a href="booking-fr.html"><img src="https://flagcdn.com/w40/fr.png" width="28" height="20" alt="Français" style="border-radius:2px;display:block;"></a></div>
+  </div>
+</nav>
+
+<!-- BOOKING HERO -->
+<div class="booking-hero">
+  <div class="booking-left">
+    <p class="booking-kicker">Book a Discovery Call</p>
+    <h1 class="booking-headline">20 Minutes.<br><em>Your Programme Built.</em></h1>
+    <p class="booking-desc">A conversation with Jean to understand where you are, what you want to achieve, and to build the visit around you specifically. No obligation. Just clarity.</p>
+    <div class="expect-list">
+      <div class="expect-item">
+        <div class="expect-num">01</div>
+        <div class="expect-text">
+          <h4>Jean assesses your level</h4>
+          <p>Whether you're a complete beginner or a seasoned shot, Jean tailors everything to where you are now — not a generic programme.</p>
+        </div>
+      </div>
+      <div class="expect-item">
+        <div class="expect-num">02</div>
+        <div class="expect-text">
+          <h4>Your visit is designed around you</h4>
+          <p>Duration, intensity, timing, who's travelling with you. The call is where the programme is built — not a sales pitch.</p>
+        </div>
+      </div>
+      <div class="expect-item">
+        <div class="expect-num">03</div>
+        <div class="expect-text">
+          <h4>You leave knowing exactly what to expect</h4>
+          <p>What a day looks like, what you'll work on, what the estate offers. No guesswork. Everything is specific to your visit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="booking-right">
+    <h2 class="form-title">Request a Call</h2>
+    <p class="form-sub">Fill in your details and Jean's team will be in touch within 24 hours to schedule.</p>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" placeholder="Your name">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>Phone (optional)</label>
+        <input type="tel" placeholder="+1 000 000 0000">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Your Shooting Background</label>
+      <select>
+        <option value="">Select one</option>
+        <option>Complete beginner</option>
+        <option>Some experience, looking to improve</option>
+        <option>Experienced hunter or competitive shot</option>
+        <option>I have taken Jean's online course</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>When are you thinking of visiting?</label>
+      <input type="text" placeholder="e.g. Spring 2025, flexible, etc.">
+    </div>
+    <div class="form-group">
+      <label>Anything else Jean should know?</label>
+      <textarea placeholder="Goals, party size, specific interests..."></textarea>
+    </div>
+    <button class="form-submit">Request a Discovery Call</button>
+    <p class="form-note">Your details are only used to arrange your call. Jean's team will respond within 24 hours.</p>
+  </div>
+</div>
+
+<!-- REASSURANCE -->
+<div class="reassurance">
+  <div class="reassurance-item reveal">
+    <div class="reassurance-label">The Call</div>
+    <div class="reassurance-title">20 minutes with Jean's team</div>
+    <p class="reassurance-body">Not a sales call. A genuine conversation to understand what you're looking for and whether Montardy is the right fit for you.</p>
+  </div>
+  <div class="reassurance-item reveal">
+    <div class="reassurance-label">The Programme</div>
+    <div class="reassurance-title">Built around you, not a template</div>
+    <p class="reassurance-body">Every visit to Montardy is different. The call is where your programme is designed — duration, intensity, timing, what the estate provides.</p>
+  </div>
+  <div class="reassurance-item reveal">
+    <div class="reassurance-label">The Estate</div>
+    <div class="reassurance-title">Limited availability each season</div>
+    <p class="reassurance-body">Montardy accepts a small number of guests per season. The discovery call is the first step to securing your dates.</p>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-brand">Château de Montardy</div>
+    <div class="footer-tag">Private Estate · Dordogne, France</div>
+    <div class="footer-copy">© 2025 Château de Montardy. All rights reserved.</div>
+  </div>
+  <div class="footer-col">
+    <h4>Navigate</h4>
+    <a href="index.html">Home</a>
+    <a href="shooting-school.html">The Shooting School</a>
+    <a href="estate.html">The Estate</a>
+    <a href="region.html">The Region</a>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <a href="/cdn-cgi/l/email-protection#40232f2e34212334002328213425213524252d2f2e34213224396e232f2d"><span class="__cf_email__" data-cfemail="b7d4d8d9c3d6d4c3f7d4dfd6c3d2d6c2d3d2dad8d9c3d6c5d3ce99d4d8da">[email&#160;protected]</span></a>
+    <a href="tel:+33500000000">+33 (0)5 00 00 00 00</a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  
+  document.querySelectorAll('a, button').forEach(el => { el.addEventListener('mouseenter', () => ring.classList.add('hover')); el.addEventListener('mouseleave', () => ring.classList.remove('hover')); });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reassurance-item, .expect-item').forEach(el => { observer.observe(el); });
+
+  const transition = document.getElementById('page-transition');
+  document.querySelectorAll('a[href$=".html"]').forEach(link => { link.addEventListener('click', e => { const href = link.getAttribute('href'); e.preventDefault(); transition.classL
