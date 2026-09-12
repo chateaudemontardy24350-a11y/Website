@@ -115,7 +115,7 @@
 <body>
 <div class="page-transition" id="page-transition"></div>
 
-<nav id="nav" class="dark">
+<nav id="nav" class="scrolled">
   <div class="nav-left">
     <a href="shooting-school.html">The Shooting School</a>
     <a href="estate.html">The Estate</a>
@@ -309,7 +309,7 @@ Leave without them.</h1>
   <div>
     <div class="footer-brand">Château de Montardy</div>
     <div class="footer-tag">Private Estate · Dordogne, France</div>
-    <div class="footer-copy">© 2025 Château de Montardy. All rights reserved.</div>
+    <div class="footer-copy">© 2026 Château de Montardy. All rights reserved.</div>
   </div>
   <div class="footer-col">
     <h4>Navigate</h4>
@@ -321,8 +321,8 @@ Leave without them.</h1>
   </div>
   <div class="footer-col">
     <h4>Contact</h4>
-    <a href="mailto:contact@chateaudemontardy.com">contact@chateaudemontardy.com</a>
-    <a href="tel:+33500000000">+33 (0)5 00 00 00 00</a>
+    <a href="mailto:chassetir@yahoo.com">chassetir@yahoo.com</a>
+    <a href="tel:+33624130105">+33 6 24 13 01 05</a>
     <a href="booking.html">Book a Discovery Call →</a>
   </div>
 </footer>
@@ -331,7 +331,7 @@ Leave without them.</h1>
   
   document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));});
   const nav=document.getElementById('nav');
-  window.addEventListener('scroll',()=>{if(window.scrollY>80){nav.classList.add('scrolled');nav.classList.remove('dark');}else{nav.classList.remove('scrolled');nav.classList.add('dark');}});
+  nav.classList.add('scrolled');
   const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('.split-kicker,.split-headline,.split-body,.split-link').forEach((el,i)=>{setTimeout(()=>el.classList.add('visible'),i*100);});entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.15,rootMargin:'0px 0px -60px 0px'});
   document.querySelectorAll('.reveal,.session-title,.session-step,.for-title,.for-card,.testimonials-title,.testimonial-card,.cta-left,.cta-right').forEach(el=>observer.observe(el));
   const transition=document.getElementById('page-transition');

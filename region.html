@@ -244,7 +244,7 @@
   <div>
     <div class="footer-brand">Château de Montardy</div>
     <div class="footer-tag">Private Estate · Dordogne, France</div>
-    <div class="footer-copy">© 2025 Château de Montardy. All rights reserved.</div>
+    <div class="footer-copy">© 2026 Château de Montardy. All rights reserved.</div>
   </div>
   <div class="footer-col">
     <h4>Navigate</h4>
@@ -255,8 +255,8 @@
   </div>
   <div class="footer-col">
     <h4>Contact</h4>
-    <a href="/cdn-cgi/l/email-protection#54373b3a2035372014373c35203135213031393b3a203526302d7a373b39"><span class="__cf_email__" data-cfemail="2e4d41405a4f4d5a6e4d464f5a4b4f5b4a4b4341405a4f5c4a57004d4143">[email&#160;protected]</span></a>
-    <a href="tel:+33500000000">+33 (0)5 00 00 00 00</a>
+    <a href="mailto:chassetir@yahoo.com">chassetir@yahoo.com</a>
+    <a href="tel:+33624130105">+33 6 24 13 01 05</a>
     <a href="booking.html">Book a Discovery Call →</a>
   </div>
 </footer>
@@ -281,4 +281,8 @@
   document.querySelectorAll('.reveal, .intro-puncher, .intro-sub, .intro-text, .cta-left, .cta-right, .highlights-title, .highlight-item, .photo-grid-img, .map-title, .map-sub, .map-container').forEach(el => { observer.observe(el); });
 
   const transition = document.getElementById('page-transition');
-  document.querySelectorAll('a[href$=".html"]').forEach(link => { link.addEventListener('click', e => { const href = link.getAttribute('href'); e.preventDefault(); transition.classL
+  document.querySelectorAll('a[href$=".html"]').forEach(link => { link.addEventListener('click', e => { const href = link.getAttribute('href'); e.preventDefault(); transition.classList.add('leaving'); setTimeout(() => { window.location.href = href; }, 600); }); });
+  window.addEventListener('pageshow', () => { transition.classList.add('entering'); setTimeout(() => transition.classList.remove('entering'), 800); });
+</script>
+</body>
+</html>
